@@ -37,7 +37,15 @@ create table Token (
   isSignUp boolean not null
 );
 
+create table Entry (
+  id serial primary key not null,
+  creatorId int not null references Account(id),
+  created timestamp not null,
+  content text not null
+)
+
 # --- !Downs
 
-drop table if exists Account cascade
-drop table if exists Token cascade
+drop table if exists Entry cascade;
+drop table if exists Account cascade;
+drop table if exists Token cascade;
