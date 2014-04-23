@@ -2,10 +2,7 @@ package dao
 
 import anorm._
 import anorm.SqlParser._
-import play.api.db._
-import play.api.Play.current
 import org.joda.time.DateTime
-
 
 import common.AnormExtension._
 import model._
@@ -17,7 +14,7 @@ trait EntryDao {
   def update(entry: Entry): Entry
 }
 
-class PsqlEntryDao extends EntryDao {
+class PsqlEntryDao extends EntryDao with SqlHelpers {
 
   val parser =
     get[Pk[Long]]("id") ~
@@ -26,11 +23,56 @@ class PsqlEntryDao extends EntryDao {
     get[DateTime]("created") ~
     str("content") map { case id ~ creatorId ~ stateId ~ created ~ content => Entry(id, creatorId, stateId, created, content)}
 
-  def insert(entry: Entry): Entry = ???
+  val fields = Seq("id", "creatorId", "stateId", "created", "content")
+  val allFields = fields.mkString(", ")
 
-  def getById(id: Long): Option[Entry] = ???
+  def insert(entry: Entry): Entry = {
+    val key = I("""
+      insert into Entry
+        (creatorId, stateId, created, content)
+      values
+        ({creatorId}, {stateId}, {created}, {content})
+    """.stripMargin)(
+      'creatorId -> entry.creatorId,
+      'stateId -> entry.stateId,
+      'created -> entry.created,
+      'content -> entry.content
+    )
+    entry.copy(id = Id(key))
+  }
 
-  def listForUser(accountId: Long): Seq[Entry] = ???
+  def getById(id: Long): Option[Entry] =
+    Q(s"""
+      select $allFields
+      from Entry
+      where id = {id}
+    """.stripMargin)(
+      'id -> id
+    )(
+      parser.singleOpt
+    )
 
-  def update(entry: Entry): Entry = ???
+  def listForUser(accountId: Long): Seq[Entry] =
+    Q(s"""
+      select $allFields
+      from Entry
+      where creatorId = {creatorId}
+    """.stripMargin)(
+      'creatorId -> accountId
+    )(
+      parser.*
+    )
+
+  def update(entry: Entry): Entry = {
+    U("""
+      update set
+        stateId = {stateId},
+        content = {content}
+    """.stripMargin)(
+      'stateId -> entry.stateId,
+      'content -> entry.content
+    )
+    entry
+  }
+
 }
