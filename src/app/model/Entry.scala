@@ -1,6 +1,6 @@
 package model
 
-import anorm.Pk
+import anorm.{NotAssigned, Pk}
 import org.joda.time.DateTime
 
 case class Entry(
@@ -9,4 +9,7 @@ case class Entry(
   stateId: Long,
   created: DateTime,
   content: String
-)
+) {
+  def this(creatorId: Long, statedId: Long, content: String) =
+    this(NotAssigned, creatorId, stateId, DateTime.now(), content)
+}
