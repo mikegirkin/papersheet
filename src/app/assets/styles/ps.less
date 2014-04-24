@@ -1,0 +1,26 @@
+@HeaderHeight: 40px;
+
+body, div, p, header, footer {
+  font-family: Helvetica, FreeSans, 'Liberation Sans', Helmet, Arial, sans-serif;
+  font-size: 13px;
+  margin: 0;
+  padding: 0;
+}
+
+.invisible {
+  display: none;
+}
+
+header {
+  background-color: #222222;
+  height: @HeaderHeight;
+}
+
+.globalContainer {
+  max-width: 1200px;
+  min-height: 500px;
+  margin: auto;
+  border-left: 1px solid #DDD;
+  border-right: 1px solid #DDD;
+  top: @HeaderHeight;
+}
