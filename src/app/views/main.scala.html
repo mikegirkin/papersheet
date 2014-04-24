@@ -5,11 +5,32 @@
 
     </header>
     <div class="globalContainer">
-
+        Some text
     </div>
     <div class="invisible">
-        <div id="entryListViewContainer">
-
+        <div id="entryListView">
+            <h1>
+                Entry list view
+            </h1>
         </div>
     </div>
+
+    <script type="text/html" id="entryListTemplate">
+        <div>
+        <% entries.each(function (entry) { %>
+            <div>
+                <div>
+                    <%= entry.get('id') %>
+                </div>
+                <div>
+                    <%= entry.get('content') %>
+                </div>
+                <div>
+                    <%= entry.get('statusId') %>
+                </div>
+            </div>
+        <% }); %>
+        </div>
+
+    </script>
 }
