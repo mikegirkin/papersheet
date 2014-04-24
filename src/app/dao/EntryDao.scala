@@ -27,12 +27,12 @@ class PsqlEntryDao extends EntryDao with SqlHelpers {
   val allFields = fields.mkString(", ")
 
   def insert(entry: Entry): Entry = {
-    val key = I("""
+    val key = I[Long]("""
       insert into Entry
         (creatorId, stateId, created, content)
       values
         ({creatorId}, {stateId}, {created}, {content})
-    """.stripMargin)(
+    """)(
       'creatorId -> entry.creatorId,
       'stateId -> entry.stateId,
       'created -> entry.created,
@@ -46,7 +46,7 @@ class PsqlEntryDao extends EntryDao with SqlHelpers {
       select $allFields
       from Entry
       where id = {id}
-    """.stripMargin)(
+    """)(
       'id -> id
     )(
       parser.singleOpt
@@ -57,7 +57,7 @@ class PsqlEntryDao extends EntryDao with SqlHelpers {
       select $allFields
       from Entry
       where creatorId = {creatorId}
-    """.stripMargin)(
+    """)(
       'creatorId -> accountId
     )(
       parser.*
@@ -68,7 +68,7 @@ class PsqlEntryDao extends EntryDao with SqlHelpers {
       update set
         stateId = {stateId},
         content = {content}
-    """.stripMargin)(
+    """)(
       'stateId -> entry.stateId,
       'content -> entry.content
     )

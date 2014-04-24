@@ -10,6 +10,6 @@ case class Entry(
   created: DateTime,
   content: String
 ) {
-  def this(creatorId: Long, statedId: Long, content: String) =
+  def this(creatorId: Long, stateId: Long, content: String) =
     this(NotAssigned, creatorId, stateId, DateTime.now(), content)
 }
