@@ -7,7 +7,7 @@ import model._
 
 object Global extends GlobalSettings {
 
-  object PsqlDao extends PsqlDao
+  object PsqlDao extends PsqlDaoProvider
 
   override def onStart(app: Application) = {
     if(PsqlDao.entryStateDao.getById(1).isEmpty) insertInitialData

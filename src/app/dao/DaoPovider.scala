@@ -6,7 +6,7 @@ trait DaoProvider {
   val accountDao: IAccountDao
 }
 
-trait PsqlDao extends DaoProvider {
+trait PsqlDaoProvider extends DaoProvider {
   object PsqlEntryDaoImpl extends PsqlEntryDao
   object PsqlEntryStateDaoImpl extends PsqlEntryStateDao
 
