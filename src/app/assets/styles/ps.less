@@ -17,10 +17,43 @@ header {
 }
 
 .globalContainer {
-  max-width: 1200px;
-  min-height: 500px;
-  margin: auto;
-  border-left: 1px solid #DDD;
-  border-right: 1px solid #DDD;
+  position: absolute;
   top: @HeaderHeight;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  .innerContainer {
+    max-width: 1200px;
+    min-width: 400px;
+    height: 100%;
+    margin: auto;
+    border-left: 1px solid #DDD;
+    border-right: 1px solid #DDD;
+    position: relative;
+    top:0;
+    bottom:0;
+    left: 0;
+    right: 0;
+
+    #leftSidebar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 200px;
+      float: left;
+      background: #EEE;
+    }
+
+    #mainArea {
+      position: absolute;;
+      left: 200px;
+      top: 0;
+      right: 0;
+      bottom: 0;
+    }
+  }
+
+
 }
