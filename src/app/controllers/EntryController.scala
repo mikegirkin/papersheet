@@ -48,6 +48,25 @@ abstract class EntryController extends Controller with AbstractSecurity with Dao
     )
   }
 
+  def update(id: Long) = SecuredAjax { account => implicit request =>
+    editEntryForm.bindFromRequest().fold(
+      errorForm => BadRequest(toJson(errorForm.errors)),
+      vm => {
+        entryDao.getById(id).map { entry =>
+          if(entry.creatorId == account.id.get) {
+            val updatedEntry = entryDao.update(
+              entry.copy(content = vm.content, stateId = vm.stateId, groupId = vm.groupId)
+            )
+            Ok(toJson(updatedEntry))
+          } else {
+            Forbidden
+          }
+        }.getOrElse{
+          NotFound
+        }
+      }
+    )
+  }
 }
 
 object EntryController extends EntryController with SecureSocialSecurity with PsqlDaoProvider

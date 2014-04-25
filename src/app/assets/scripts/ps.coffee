@@ -25,6 +25,7 @@ class EntryListView extends Backbone.View
 
   initialize: (entries) ->
     @entries = entries
+    @entries.on("reset", @onEntriesReset, @)
 
   render: () ->
     layout.mainArea.html(
@@ -34,6 +35,8 @@ class EntryListView extends Backbone.View
     )
     @$el = $("#entryListViewContainer")
     @$el.find('#createNewEntryBtn').click($.proxy(@onCreateRequested, @))
+    @$el.find(".changeEntryState").on("click", $.proxy(@onChangeEntryStateRequested, @))
+    @$el.find(".editEntry").click($.proxy(@onEditEntryRequested, @))
 
   onCreateRequested: (e) ->
     e.preventDefault()
@@ -44,14 +47,22 @@ class EntryListView extends Backbone.View
       groupId: 1
     )
     entry.save().done($.proxy(
-      () -> @entries.fetch().done($.proxy(
-        () ->
-          @render()
-          console.log("fetch done")
-        @
-      ))
+      () -> @entries.fetch({reset: true})
       @
     ))
+
+  onEntriesReset: () ->
+    @render()
+
+  onChangeEntryStateRequested: (e) ->
+    e.preventDefault()
+    entryId = $(e.target).closest(".entryRow").attr('data-id')
+    console.log('entryId:' + entryId)
+
+  onEditEntryRequested: (e) ->
+    e.preventDefault()
+
+
 
 class EntryGroupListView extends Backbone.View
   template: _.template($("#entryGroupListTemplate").html())
@@ -74,7 +85,6 @@ class Application extends Backbone.Router
     "" : "index"
 
   index: () ->
-    console.log("index")
     @entries = new EntryCollection()
     @groups = new EntryGroupCollection()
     $.when(

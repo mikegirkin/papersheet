@@ -30,15 +30,15 @@
             </div>
             <div class="entryListContainer">
                 <% entries.each(function (entry) { %>
-                    <div class="entryRow" data-stateId='<%= entry.get("stateId") %>' >
-                        <div class="actionsCell cell">
-
+                    <div class="entryRow" data-stateId='<%= entry.get("stateId") %>' data-id="<%= entry.get('id') %>">
+                        <div class="cell">
+                            <button class="changeEntryState">F</button>
                         </div>
-                        <div class="idCell cell">
-                            <%= entry.get('id') %>
-                        </div>
-                        <div class="contentCell cell">
+                        <div class="cell">
                             <%= entry.get('content') %>
+                        </div>
+                        <div class="cell">
+                            <button class="editEntry">E</button>
                         </div>
                     </div>
                 <% }); %>
