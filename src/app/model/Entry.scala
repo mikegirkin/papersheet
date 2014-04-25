@@ -18,6 +18,5 @@ case class Entry(
 }
 
 object Entry {
-
   implicit val formatter = Json.format[Entry]
 }

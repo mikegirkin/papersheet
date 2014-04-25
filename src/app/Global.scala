@@ -1,4 +1,4 @@
-import anorm.Id
+import anorm.{NotAssigned, Id}
 import play.api._
 import securesocial.core._
 
@@ -18,13 +18,22 @@ object Global extends GlobalSettings {
     AccountDao.create(
       AccountDao.newUserpassAccount("mike", "mike_girkin@mail.ru", "Mike", "Girkin", "1")
     )
+
     val acc = AccountDao.findByIdentityId(IdentityId("mike", "userpass")).get
+    val accId = acc.id.get
 
     val entryStates = Seq(
       EntryState(Id(1), "Active"),
       EntryState(Id(2), "Closed")
     ).map {
       s => PsqlDao.entryStateDao.insert(s)
+    }
+
+    val entryGroups = Seq(
+      EntryGroup(NotAssigned, accId, "Group 1"),
+      EntryGroup(NotAssigned, accId, "Group 2")
+    ).map {
+      g => PsqlDao.entryGroupDao.insert(g)
     }
 
     val entries = Seq(

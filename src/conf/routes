@@ -9,6 +9,8 @@ GET     /                           controllers.Application.index
 
 GET     /json/entries               controllers.EntryController.list
 
+GET     /json/entrygroups           controllers.EntryGroupController.list
+
 
 # Login page
 GET         /login                                securesocial.controllers.LoginPage.login
