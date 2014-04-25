@@ -5,7 +5,11 @@
 
     </header>
     <div class="globalContainer">
-        Some text
+        <div id="leftSidebar">
+
+        </div>
+        <div id="mainArea">
+        </div>
     </div>
     <div class="invisible">
         <div id="entryListView">
@@ -17,20 +21,34 @@
 
     <script type="text/html" id="entryListTemplate">
         <div>
-        <% entries.each(function (entry) { %>
+            <% entries.each(function (entry) { %>
+                <div>
+                    <div>
+                        <%= entry.get('id') %>
+                    </div>
+                    <div>
+                        <%= entry.get('content') %>
+                    </div>
+                    <div>
+                        <%= entry.get('statusId') %>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </script>
+
+    <script type="text/html" id="entryGroupListTemplate">
+        <div>
+            <% entryGroups.each(function (group) { %>
             <div>
                 <div>
-                    <%= entry.get('id') %>
+                    <%= group.get('id') %>
                 </div>
                 <div>
-                    <%= entry.get('content') %>
-                </div>
-                <div>
-                    <%= entry.get('statusId') %>
+                    <%= group.get('name') %>
                 </div>
             </div>
-        <% }); %>
+            <% }); %>
         </div>
-
     </script>
 }
