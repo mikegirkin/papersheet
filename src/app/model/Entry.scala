@@ -10,11 +10,12 @@ case class Entry(
   id: Pk[Long],
   creatorId: Long,
   stateId: Long,
+  groupId: Long,
   created: DateTime,
   content: String
 ) {
-  def this(creatorId: Long, stateId: Long, content: String) =
-    this(NotAssigned, creatorId, stateId, DateTime.now(), content)
+  def this(creatorId: Long, stateId: Long, groupId: Long, content: String) =
+    this(NotAssigned, creatorId, stateId, groupId, DateTime.now(), content)
 }
 
 object Entry {

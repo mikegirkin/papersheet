@@ -20,21 +20,26 @@ class PsqlEntryDao extends EntryDao with SqlHelpers {
     get[Pk[Long]]("id") ~
     long("creatorId") ~
     long("stateId") ~
+    long("groupId") ~
     get[DateTime]("created") ~
-    str("content") map { case id ~ creatorId ~ stateId ~ created ~ content => Entry(id, creatorId, stateId, created, content)}
+    str("content") map {
+      case id ~ creatorId ~ stateId ~ groupId ~ created ~ content =>
+        Entry(id, creatorId, stateId, groupId, created, content)
+    }
 
-  val fields = Seq("id", "creatorId", "stateId", "created", "content")
+  val fields = Seq("id", "creatorId", "stateId", "groupId", "created", "content")
   val allFields = fields.mkString(", ")
 
   def insert(entry: Entry): Entry = {
     val key = I[Long]("""
       insert into Entry
-        (creatorId, stateId, created, content)
+        (creatorId, stateId, groupId, created, content)
       values
-        ({creatorId}, {stateId}, {created}, {content})
+        ({creatorId}, {stateId}, {groupId}, {created}, {content})
     """)(
       'creatorId -> entry.creatorId,
       'stateId -> entry.stateId,
+      'groupId -> entry.groupId,
       'created -> entry.created,
       'content -> entry.content
     )
@@ -67,8 +72,9 @@ class PsqlEntryDao extends EntryDao with SqlHelpers {
     U("""
       update set
         stateId = {stateId},
+        groupId = {groupId},
         content = {content}
-    """)(
+      """)(
       'stateId -> entry.stateId,
       'content -> entry.content
     )

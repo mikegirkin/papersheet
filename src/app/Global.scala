@@ -27,21 +27,21 @@ object Global extends GlobalSettings {
       EntryState(Id(2), "Closed")
     ).map {
       s => PsqlDao.entryStateDao.insert(s)
-    }
+    }.toArray
 
     val entryGroups = Seq(
       EntryGroup(NotAssigned, accId, "Group 1"),
       EntryGroup(NotAssigned, accId, "Group 2")
     ).map {
       g => PsqlDao.entryGroupDao.insert(g)
-    }
+    }.toArray
 
     val entries = Seq(
-      new Entry(acc.id.get, 1, "Entry 1"),
-      new Entry(acc.id.get, 1, "Entry 2"),
-      new Entry(acc.id.get, 1, "Entry 3"),
-      new Entry(acc.id.get, 2, "Closed entry 1"),
-      new Entry(acc.id.get, 2, "Closed entry 2")
+      new Entry(acc.id.get, 1, entryGroups(0).id.get, "Entry 1"),
+      new Entry(acc.id.get, 1, entryGroups(1).id.get, "Entry 2"),
+      new Entry(acc.id.get, 1, entryGroups(0).id.get, "Entry 3"),
+      new Entry(acc.id.get, 2, entryGroups(1).id.get, "Closed entry 1"),
+      new Entry(acc.id.get, 2, entryGroups(0).id.get, "Closed entry 2")
     ).map {
       e => PsqlDao.entryDao.insert(e)
     }

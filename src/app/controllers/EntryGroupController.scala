@@ -18,4 +18,4 @@ abstract class EntryGroupController extends Controller with AbstractSecurity wit
 
 }
 
-object EntryGroupController extends Controller with SecureSocialSecurity with PsqlDaoProvider
+object EntryGroupController extends EntryGroupController with SecureSocialSecurity with PsqlDaoProvider
