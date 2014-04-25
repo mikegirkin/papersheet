@@ -43,7 +43,25 @@ header {
       bottom: 0;
       width: 200px;
       float: left;
-      background: #EEE;
+      border-right: 1px solid #DDD;
+      box-sizing: border-box;
+
+      .entryGroupListContainer {
+        display: table;
+        width: 100%;
+        border-collapse: collapse;
+        margin-right: 10px;
+
+        .entryGroupRow {
+          display: table-row;
+
+          .cell {
+            display: table-cell;
+            padding: 10px 0px;
+          }
+        }
+      }
+
     }
 
     #mainArea {
@@ -52,8 +70,32 @@ header {
       top: 0;
       right: 0;
       bottom: 0;
+
+      .entryListContainer {
+        display: table;
+        width: 100%;
+        border-collapse: collapse;
+
+        .entryRow{
+          display: table-row;
+          border-top: 1px solid #DDD;
+          border-bottom: 1px solid #DDD;
+
+          .cell {
+            display: table-cell;
+            padding-top: 10px;
+            padding-bottom: 10px;
+          }
+
+          &[data-stateId="2"] {
+            background: #EEE;
+          }
+        }
+
+
+      }
+
     }
   }
-
 
 }

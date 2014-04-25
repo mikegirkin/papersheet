@@ -23,17 +23,17 @@
     </div>
 
     <script type="text/html" id="entryListTemplate">
-        <div>
+        <div class="entryListContainer">
             <% entries.each(function (entry) { %>
-                <div>
-                    <div>
+                <div class="entryRow" data-stateId='<%= entry.get("stateId") %>' >
+                    <div class="actionsCell cell">
+
+                    </div>
+                    <div class="idCell cell">
                         <%= entry.get('id') %>
                     </div>
-                    <div>
+                    <div class="contentCell cell">
                         <%= entry.get('content') %>
-                    </div>
-                    <div>
-                        <%= entry.get('statusId') %>
                     </div>
                 </div>
             <% }); %>
@@ -41,13 +41,10 @@
     </script>
 
     <script type="text/html" id="entryGroupListTemplate">
-        <div>
+        <div class="entryGroupListContainer">
             <% entryGroups.each(function (group) { %>
-            <div>
-                <div>
-                    <%= group.get('id') %>
-                </div>
-                <div>
+            <div class="entryGroupRow">
+                <div class="cell">
                     <%= group.get('name') %>
                 </div>
             </div>
