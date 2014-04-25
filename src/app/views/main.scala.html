@@ -23,20 +23,26 @@
     </div>
 
     <script type="text/html" id="entryListTemplate">
-        <div class="entryListContainer">
-            <% entries.each(function (entry) { %>
-                <div class="entryRow" data-stateId='<%= entry.get("stateId") %>' >
-                    <div class="actionsCell cell">
+        <div id="entryListViewContainer">
+            <div class="newEntryCreationArea">
+                <input type="text" id="newEntryContent"/>
+                <button id="createNewEntryBtn">Create</button>
+            </div>
+            <div class="entryListContainer">
+                <% entries.each(function (entry) { %>
+                    <div class="entryRow" data-stateId='<%= entry.get("stateId") %>' >
+                        <div class="actionsCell cell">
 
+                        </div>
+                        <div class="idCell cell">
+                            <%= entry.get('id') %>
+                        </div>
+                        <div class="contentCell cell">
+                            <%= entry.get('content') %>
+                        </div>
                     </div>
-                    <div class="idCell cell">
-                        <%= entry.get('id') %>
-                    </div>
-                    <div class="contentCell cell">
-                        <%= entry.get('content') %>
-                    </div>
-                </div>
-            <% }); %>
+                <% }); %>
+            </div>
         </div>
     </script>
 

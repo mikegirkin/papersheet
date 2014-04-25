@@ -3,11 +3,9 @@ package common
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import play.api.data.validation.ValidationError
+import play.api.data._
 import anorm._
 import org.joda.time._
-
-import model._
-import play.api.data.FormError
 
 object JsonFormatHelpers {
 
@@ -36,5 +34,14 @@ object JsonFormatHelpers {
       scala.util.control.Exception.allCatch[DateTime] opt (DateTime.parse(input, df))
 
     def writes(d: org.joda.time.DateTime): JsValue = JsString(d.toString())
+  }
+
+  implicit object FormErrorWrites extends Writes[FormError] {
+    def writes(error: FormError) = Json.toJson(
+      Map(
+        "id" -> Json.toJson(error.key.replace('.', '_')),
+        "message" -> Json.toJson(error.message)
+      )
+    )
   }
 }
