@@ -37,6 +37,12 @@ create table Token (
   isSignUp boolean not null
 );
 
+create table EntryGroup (
+  id bigserial primary key not null,
+  ownerId bigint not null references Account(id),
+  name varchar(1023)
+);
+
 create table EntryState(
   id bigint primary key not null,
   name varchar(1023)
@@ -46,6 +52,7 @@ create table Entry (
   id serial primary key not null,
   creatorId bigint not null references Account(id),
   stateId bigint not null references EntryState(id),
+  groupId bigint not null references EntryGroup(id),
   created timestamp not null,
   content text not null
 );
@@ -55,5 +62,6 @@ create table Entry (
 
 drop table if exists Entry cascade;
 drop table if exists EntryState cascade;
+drop table if exists EntryGroup cascase;
 drop table if exists Account cascade;
 drop table if exists Token cascade;
