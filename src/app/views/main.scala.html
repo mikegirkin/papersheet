@@ -47,9 +47,9 @@
     </script>
 
     <script type="text/html" id="entryGroupListTemplate">
-        <div class="entryGroupListContainer">
+        <div id="entryGroupListContainer">
             <% entryGroups.each(function (group) { %>
-            <div class="entryGroupRow">
+            <div class="entryGroupRow" data-id="<%= group.get('id') %>">
                 <div class="cell">
                     <%= group.get('name') %>
                 </div>

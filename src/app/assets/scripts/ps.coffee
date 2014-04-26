@@ -62,12 +62,14 @@ class EntryListView extends Backbone.View
   onEditEntryRequested: (e) ->
     e.preventDefault()
 
-
-
 class EntryGroupListView extends Backbone.View
   template: _.template($("#entryGroupListTemplate").html())
   entryGroups: null
+  controller: null
   $el: null
+
+  initialize: (controller) ->
+    @controller = controller
 
   render: () ->
     layout.leftSidebar.html(
@@ -75,31 +77,51 @@ class EntryGroupListView extends Backbone.View
         entryGroups: @entryGroups
       )
     )
+    @$el = $('#entryGroupListContainer')
+    @$el.find('.entryGroupRow').on("click", $.proxy(@onGroupClicked, @))
+
+  onGroupClicked: (e) ->
+    e.preventDefault()
+    tgt = $(e.target).closest('.entryGroupRow')
+    id = tgt.attr('data-id')
+    @$el.find('.entryGroupRow').removeClass('selected')
+    tgt.addClass('selected')
+    @controller.setSelectedGroup(id)
+
 
 class Application extends Backbone.Router
   views:
     entryList: null
-    entryGroupList: new EntryGroupListView()
+    entryGroupList: null
+
+  model:
+    entries: null
+    groups: null
+    selectedGroupId: null
 
   routes:
     "" : "index"
 
   index: () ->
-    @entries = new EntryCollection()
-    @groups = new EntryGroupCollection()
+    @model.entries = new EntryCollection()
+    @model.groups = new EntryGroupCollection()
     $.when(
-      @entries.fetch(),
-      @groups.fetch()
+      @model.entries.fetch(),
+      @model.groups.fetch()
     ).done($.proxy(
       () ->
-        @views.entryList = new EntryListView(@entries)
+        @views.entryList = new EntryListView(@model.entries)
         @views.entryList.render()
 
-        @views.entryGroupList.entryGroups = @groups
+        @views.entryGroupList = new EntryGroupListView(@)
+        @views.entryGroupList.entryGroups = @model.groups
         @views.entryGroupList.render()
       @
       )
     )
+
+  setSelectedGroup: (groupId) ->
+    @model.selectedGroupId = groupId
 
 $ ->
   window.app = new Application()

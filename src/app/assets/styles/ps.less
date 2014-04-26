@@ -46,7 +46,7 @@ header {
       border-right: 1px solid #DDD;
       box-sizing: border-box;
 
-      .entryGroupListContainer {
+      #entryGroupListContainer {
         display: table;
         width: 100%;
         border-collapse: collapse;
@@ -54,10 +54,19 @@ header {
 
         .entryGroupRow {
           display: table-row;
+          cursor: pointer;
 
           .cell {
             display: table-cell;
             padding: 4px 0px;
+          }
+
+          &.selected {
+            font-weight: bold;
+          }
+
+          &:hover{
+            background: #DDD;
           }
         }
       }
