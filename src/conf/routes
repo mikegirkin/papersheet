@@ -7,7 +7,7 @@ GET         /                              controllers.Application.index
 
 #JSON data
 
-GET         /json/entries                  controllers.EntryController.list
+GET         /json/entries                  controllers.EntryController.list(groupId:Option[Long] ?= None)
 POST        /json/entries                  controllers.EntryController.create
 
 GET         /json/entrygroups              controllers.EntryGroupController.list

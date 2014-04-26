@@ -28,10 +28,10 @@ abstract class EntryController extends Controller with AbstractSecurity with Dao
     )(EditEntryVM.apply)(EditEntryVM.unapply)
   )
 
-  def list(categoryId: Option[Long] = None) = SecuredAjax { account => request =>
+  def list(groupId: Option[Long] = None) = SecuredAjax { account => request =>
     Ok(
       toJson(
-        entryDao.listForUser(account.id.get)
+        entryDao.listForUser(account.id.get, EntryQueryParams(groupId))
       )
     )
   }

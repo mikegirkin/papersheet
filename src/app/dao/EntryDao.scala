@@ -13,25 +13,37 @@ case class AnormParameters(
 )
 
 trait EntryQueryParams {
-  val categoryId: Option[Long]
+  val groupId: Option[Long]
+
+  def anormParams(): AnormParameters = {
+    val params =
+      groupId.map { id =>
+        Seq(("groupId = {groupId}", 'groupId -> toParameterValue(id)))
+      }.getOrElse(
+        Seq()
+      ).unzip(x => (x._1, x._2))
+    AnormParameters(params._1, params._2)
+  }
 }
 
 object NoParams extends EntryQueryParams {
-  val categoryId: Option[Long] = None
+  val groupId: Option[Long] = None
+}
 
-  def anormParams(): (Seq[String], Seq[(Symbol, ParameterValue[_])]) = {
-    categoryId.map { id =>
-      Seq(("categoryId = {categoryId}", 'categoryId -> toParameterValue(id)))
-    }.getOrElse(
-      Seq()
-    ).unzip()
+object EntryQueryParams {
+  def apply(groupId: Option[Long]) = {
+    val gid = groupId
+
+    new EntryQueryParams {
+      val groupId: Option[Long] = gid
+    }
   }
 }
 
 trait EntryDao {
   def insert(entry: Entry): Entry
   def getById(id: Long): Option[Entry]
-  def listForUser(accountId: Long): Seq[Entry]
+  def listForUser(accountId: Long, params: EntryQueryParams): Seq[Entry]
   def update(entry: Entry): Entry
 }
 
@@ -78,17 +90,21 @@ class PsqlEntryDao extends EntryDao with SqlHelpers {
       parser.singleOpt
     )
 
-  def listForUser(accountId: Long, params: EntryQueryParams): Seq[Entry] =
+  def listForUser(accountId: Long, params: EntryQueryParams): Seq[Entry] ={
+    val anormParams = params.anormParams()
+
+    val whereString = (anormParams.whereParts :+ "creatorId = {creatorId}").mkString(" and ")
     Q(s"""
       select $allFields
       from Entry
       where
-        creatorId = {creatorId}
+         $whereString
     """)(
-      'creatorId -> accountId
+      (anormParams.parameterParts :+ ('creatorId -> toParameterValue(accountId))):_*
     )(
       parser.*
     )
+  }
 
   def update(entry: Entry): Entry = {
     U("""

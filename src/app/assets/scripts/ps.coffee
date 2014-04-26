@@ -25,7 +25,7 @@ class EntryListView extends Backbone.View
 
   initialize: (entries) ->
     @entries = entries
-    @entries.on("reset", @onEntriesReset, @)
+    @entries.on("reset change add remove", @onEntriesReset, @)
 
   render: () ->
     layout.mainArea.html(
@@ -52,6 +52,7 @@ class EntryListView extends Backbone.View
     ))
 
   onEntriesReset: () ->
+    console.log("onEntriesReset")
     @render()
 
   onChangeEntryStateRequested: (e) ->
@@ -122,6 +123,10 @@ class Application extends Backbone.Router
 
   setSelectedGroup: (groupId) ->
     @model.selectedGroupId = groupId
+    @model.entries.fetch(
+      reset: true
+      data:
+        groupId: @model.selectedGroupId)
 
 $ ->
   window.app = new Application()
