@@ -7,6 +7,27 @@ import org.joda.time.DateTime
 import common.AnormExtension._
 import model._
 
+case class AnormParameters(
+  whereParts: Seq[String],
+  parameterParts: Seq[(Symbol, ParameterValue[_])]
+)
+
+trait EntryQueryParams {
+  val categoryId: Option[Long]
+}
+
+object NoParams extends EntryQueryParams {
+  val categoryId: Option[Long] = None
+
+  def anormParams(): (Seq[String], Seq[(Symbol, ParameterValue[_])]) = {
+    categoryId.map { id =>
+      Seq(("categoryId = {categoryId}", 'categoryId -> toParameterValue(id)))
+    }.getOrElse(
+      Seq()
+    ).unzip()
+  }
+}
+
 trait EntryDao {
   def insert(entry: Entry): Entry
   def getById(id: Long): Option[Entry]
@@ -57,11 +78,12 @@ class PsqlEntryDao extends EntryDao with SqlHelpers {
       parser.singleOpt
     )
 
-  def listForUser(accountId: Long): Seq[Entry] =
+  def listForUser(accountId: Long, params: EntryQueryParams): Seq[Entry] =
     Q(s"""
       select $allFields
       from Entry
-      where creatorId = {creatorId}
+      where
+        creatorId = {creatorId}
     """)(
       'creatorId -> accountId
     )(
