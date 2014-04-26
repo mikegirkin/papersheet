@@ -9,6 +9,8 @@ GET         /                              controllers.Application.index
 
 GET         /json/entries                  controllers.EntryController.list(groupId:Option[Long] ?= None)
 POST        /json/entries                  controllers.EntryController.create
+#PUT         /json/entries                  controllers.EntryController.update
+PUT         /json/entries/$id<[0-9]+>    controllers.EntryController.update(id: Long)
 
 GET         /json/entrygroups              controllers.EntryGroupController.list
 

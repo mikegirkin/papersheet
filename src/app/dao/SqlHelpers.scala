@@ -24,7 +24,7 @@ trait SqlHelpers {
 
   protected def U(query: String)
        (params: (Symbol, ParameterValue[_])*): Unit = DB.withConnection { implicit cn =>
-    genericQuery(query)(params)
+    genericQuery(query)(params).executeUpdate()
   }
 
   private def genericQuery(query: String)

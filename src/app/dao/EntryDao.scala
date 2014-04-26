@@ -99,6 +99,7 @@ class PsqlEntryDao extends EntryDao with SqlHelpers {
       from Entry
       where
          $whereString
+      order by id
     """)(
       (anormParams.parameterParts :+ ('creatorId -> toParameterValue(accountId))):_*
     )(
@@ -108,13 +109,16 @@ class PsqlEntryDao extends EntryDao with SqlHelpers {
 
   def update(entry: Entry): Entry = {
     U("""
-      update set
+      update Entry set
         stateId = {stateId},
         groupId = {groupId},
         content = {content}
+      where id = {id}
       """)(
       'stateId -> entry.stateId,
-      'content -> entry.content
+      'groupId -> entry.groupId,
+      'content -> entry.content,
+      'id -> entry.id
     )
     entry
   }
