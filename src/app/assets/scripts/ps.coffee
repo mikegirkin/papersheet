@@ -58,9 +58,11 @@ class EditEntryForm
 class EntryListView extends Backbone.View
   template: _.template($("#entryListTemplate").html())
   entries: null
+  controller: null
 
-  initialize: (entries) ->
-    @entries = entries
+  initialize: (controller) ->
+    @controller = controller
+    @entries = @controller.model.entries
     @entries.on("reset change add remove", @onEntriesReset, @)
 
   render: () ->
@@ -80,10 +82,10 @@ class EntryListView extends Backbone.View
     entry = new Entry(
       content: content
       stateId: 1
-      groupId: 1
+      groupId: window.app.model.selectedGroupId
     )
     entry.save().done($.proxy(
-      () -> @entries.fetch({reset: true})
+      () -> @controller.refetch()
       @
     ))
 
@@ -160,7 +162,7 @@ class Application extends Backbone.Router
       @model.groups.fetch()
     ).done($.proxy(
       () ->
-        @views.entryList = new EntryListView(@model.entries)
+        @views.entryList = new EntryListView(@)
         @views.entryList.render()
 
         @views.entryGroupList = new EntryGroupListView(@)
@@ -172,10 +174,13 @@ class Application extends Backbone.Router
 
   setSelectedGroup: (groupId) ->
     @model.selectedGroupId = groupId
-    @model.entries.fetch(
-      reset: true
-      data:
-        groupId: @model.selectedGroupId)
+    @refetch()
+
+  refetch: () ->
+    request = { reset: true }
+    if(@model.selectedGroupId != null) then request.data = { groupId: @model.selectedGroupId }
+    @model.entries.fetch(request)
+
 
 $ ->
   window.app = new Application()
