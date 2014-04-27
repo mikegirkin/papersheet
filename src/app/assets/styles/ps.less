@@ -52,19 +52,10 @@ header {
       box-sizing: border-box;
 
       #entryGroupListContainer {
-        display: table;
-        width: 100%;
-        border-collapse: collapse;
-        margin-right: 10px;
 
         .entryGroupRow {
-          display: table-row;
           cursor: pointer;
-
-          .cell {
-            display: table-cell;
-            padding: 4px 0px;
-          }
+          padding: 4px 0px;
 
           &.selected {
             font-weight: bold;
@@ -73,6 +64,10 @@ header {
           &:hover{
             background: #DDD;
           }
+        }
+
+        #addGroup {
+          .entryGroupRow;
         }
       }
 

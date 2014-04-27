@@ -123,6 +123,7 @@ class EntryGroupListView extends Backbone.View
     )
     @$el = $('#entryGroupListContainer')
     @$el.find('.entryGroupRow').on("click", $.proxy(@onGroupClicked, @))
+    @$el.find('#addGroup').click($.proxy(@onAddGroupRequested, @))
 
   onGroupClicked: (e) ->
     e.preventDefault()
@@ -131,6 +132,9 @@ class EntryGroupListView extends Backbone.View
     @$el.find('.entryGroupRow').removeClass('selected')
     tgt.addClass('selected')
     @controller.setSelectedGroup(id)
+
+  onAddGroupRequested: (e) ->
+    e.preventDefault()
 
 
 class Application extends Backbone.Router

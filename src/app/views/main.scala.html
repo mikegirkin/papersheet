@@ -25,6 +25,12 @@
                 <button class="cancelEditEntry">C</button>
             </div>
         </form>
+        <form>
+            <div class="newGroupCreationArea">
+                <input type="text" id="newGroupName">
+                <
+            </div>
+        </form>
     </div>
 
     <script type="text/html" id="entryListTemplate">
@@ -56,12 +62,13 @@
     <script type="text/html" id="entryGroupListTemplate">
         <div id="entryGroupListContainer">
             <% entryGroups.each(function (group) { %>
-            <div class="entryGroupRow" data-id="<%= group.get('id') %>">
-                <div class="cell">
+                <div class="entryGroupRow" data-id="<%= group.get('id') %>">
                     <%= group.get('name') %>
                 </div>
-            </div>
             <% }); %>
+            <div id="addGroup">
+                Add group
+            </div>
         </div>
     </script>
 }
