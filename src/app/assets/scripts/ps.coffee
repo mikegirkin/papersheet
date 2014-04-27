@@ -19,6 +19,42 @@ class EntryGroupCollection extends Backbone.Collection
   model: EntryGroup
   url: window.urls.entryGroups
 
+class EditEntryForm
+  $el: null
+  $shownInsteadOf: null
+  modelBeingEdited: null
+
+  constructor: () ->
+    @$el = $('.editEntryForm')
+    @$el.detach()
+
+  edit: (el) ->
+    @$shownInsteadOf = el
+    @$shownInsteadOf.replaceWith(@$el)
+    @$el.find('.okEditEntry').click(
+      $.proxy(@onOkEditEntry, @))
+    @$el.find('.cancelEditEntry').click(
+      $.proxy(@onCancelEditEntry, @))
+    editedEntryId = @$shownInsteadOf.attr('data-id')
+    @modelBeingEdited = window.app.model.entries.get(editedEntryId)
+    @$el.find('#entryContent').val(@modelBeingEdited.get('content'))
+    @$el.find('input').focus()
+
+  hide: () ->
+    @$el.replaceWith(@$shownInsteadOf)
+
+  onOkEditEntry: (e) ->
+    e.preventDefault()
+    content = @$el.find('#entryContent').val()
+    @modelBeingEdited.set('content', content)
+    @modelBeingEdited.save().done(
+      $.proxy(@hide, @)
+    )
+
+  onCancelEditEntry: (e) ->
+    e.preventDefault()
+    @hide()
+
 class EntryListView extends Backbone.View
   template: _.template($("#entryListTemplate").html())
   entries: null
@@ -36,7 +72,7 @@ class EntryListView extends Backbone.View
     @$el = $("#entryListViewContainer")
     @$el.find('#createNewEntryBtn').click($.proxy(@onCreateRequested, @))
     @$el.find(".changeEntryState").click($.proxy(@onChangeEntryStateRequested, @))
-    @$el.find(".editEntry").click($.proxy(@onEditEntryRequested, @))
+    @$el.on('click', '.editEntry', $.proxy(@onEditEntryRequested, @))
 
   onCreateRequested: (e) ->
     e.preventDefault()
@@ -59,12 +95,14 @@ class EntryListView extends Backbone.View
     entryId = $(e.target).closest(".entryRow").attr('data-id')
     entry = @entries.get(entryId)
     entry.set('stateId', window.app.constants.closedStateId)
-    entry.save()
-    @render()
-
+    entry.save().done(
+      $.proxy(@render, @)
+    )
 
   onEditEntryRequested: (e) ->
     e.preventDefault()
+    $editedEl = $(e.target).closest('.entryRow')
+    window.app.views.editEntryForm.edit($editedEl)
 
 class EntryGroupListView extends Backbone.View
   template: _.template($("#entryGroupListTemplate").html())
@@ -101,6 +139,7 @@ class Application extends Backbone.Router
   views:
     entryList: null
     entryGroupList: null
+    editEntryForm: null
 
   model:
     entries: null
@@ -109,6 +148,9 @@ class Application extends Backbone.Router
 
   routes:
     "" : "index"
+
+  initialize: () ->
+    @views.editEntryForm = new EditEntryForm()
 
   index: () ->
     @model.entries = new EntryCollection()

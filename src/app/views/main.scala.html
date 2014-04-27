@@ -14,30 +14,37 @@
             </div>
         </div>
     </div>
-    <div class="invisible">
-        <div id="entryListView">
-            <h1>
-                Entry list view
-            </h1>
-        </div>
+    <div class="invisible" id="invisibleContainer">
+        <form class="editEntryForm entryRow">
+            <div class="changeStateCell"></div>
+            <div class="contentCell">
+                <input type="text" id="entryContent"/>
+            </div>
+            <div class="controlCell">
+                <button class="okEditEntry" type="submit">Ok</button>
+                <button class="cancelEditEntry">C</button>
+            </div>
+        </form>
     </div>
 
     <script type="text/html" id="entryListTemplate">
         <div id="entryListViewContainer">
-            <div class="newEntryCreationArea">
-                <input type="text" id="newEntryContent"/>
-                <button id="createNewEntryBtn">Create</button>
-            </div>
+            <form>
+                <div class="newEntryCreationArea">
+                    <input type="text" id="newEntryContent"/>
+                    <button id="createNewEntryBtn">Create</button>
+                </div>
+            </form>
             <div class="entryListContainer">
                 <% entries.each(function (entry) { %>
                     <div class="entryRow" data-stateId='<%= entry.get("stateId") %>' data-id="<%= entry.get('id') %>">
-                        <div class="cell">
+                        <div class="changeStateCell">
                             <button class="changeEntryState">F</button>
                         </div>
-                        <div class="cell">
+                        <div class="contentCell">
                             <%= entry.get('content') %>
                         </div>
-                        <div class="cell">
+                        <div class="controlCell">
                             <button class="editEntry">E</button>
                         </div>
                     </div>

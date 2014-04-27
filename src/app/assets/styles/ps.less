@@ -11,6 +11,11 @@ body, div, p, header, footer {
   display: none;
 }
 
+.box-sizing(@sizing) {
+  box-sizing: @sizing;
+  -moz-box-sizing: @sizing;
+}
+
 header {
   background-color: #222222;
   height: @HeaderHeight;
@@ -89,14 +94,56 @@ header {
           display: table-row;
           border-top: 1px solid #DDD;
           border-bottom: 1px solid #DDD;
+          width: 100%;
+          height: 30px;
 
-          .cell {
+          .changeStateCell {
             display: table-cell;
-            padding: 4px 0px;
+            padding: 2px 4px;
+            width: 40px;
+          }
+
+          .contentCell {
+            display: table-cell;
+            padding: 2px 2px;
+          }
+
+          .controlCell {
+            display: table-cell;
+            padding: 2px 4px;
+            width: 70px;
           }
 
           &[data-stateId="2"] {
             background: #EEE;
+            .changeStateCell button {
+              display: none;
+            }
+
+            .contentCell {
+              text-decoration: line-through;
+            }
+          }
+        }
+
+        .editEntryForm {
+          .contentCell {
+            padding-left: 0px;
+
+            input {
+              padding: 3px 1px;
+              margin: 0px;
+              border: 1px solid #999;
+              .box-sizing(border-box);
+            }
+          }
+
+          .controlCell {
+            width: 70px;
+
+            button {
+              display: inline;
+            }
           }
         }
 
