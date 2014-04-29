@@ -1,4 +1,5 @@
 @HeaderHeight: 40px;
+@MinimalWidth: 400px;
 
 body, div, p, header, footer {
   font-family: Helvetica, FreeSans, 'Liberation Sans', Helmet, Arial, sans-serif;
@@ -30,7 +31,7 @@ header {
 
   .innerContainer {
     max-width: 1200px;
-    min-width: 400px;
+    min-width: @MinimalWidth;
     height: 100%;
     margin: auto;
     border-left: 1px solid #DDD;
@@ -142,6 +143,38 @@ header {
           }
         }
 
+
+      }
+
+    }
+  }
+
+
+  .popupContainer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #555;
+    opacity: 50%;
+    z-index: 1;
+    display: none;
+
+    .popup {
+      background: white;
+      margin: 0 auto;
+      width: @MinimalWidth - 10;
+
+      .header {
+
+      }
+
+      .fields {
+
+      }
+
+      .footer {
 
       }
 

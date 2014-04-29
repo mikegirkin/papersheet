@@ -13,24 +13,36 @@
 
             </div>
         </div>
-    </div>
-    <div class="invisible" id="invisibleContainer">
-        <form class="editEntryForm entryRow">
-            <div class="changeStateCell"></div>
-            <div class="contentCell">
-                <input type="text" id="entryContent"/>
+        <div class="invisible" id="invisibleContainer">
+            <form class="editEntryForm entryRow">
+                <div class="changeStateCell"></div>
+                <div class="contentCell">
+                    <input type="text" id="entryContent"/>
+                </div>
+                <div class="controlCell">
+                    <button class="okEditEntry" type="submit">Ok</button>
+                    <button class="cancelEditEntry">C</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="popupContainer" id="editGroupForm">
+            <div class="popup">
+                <form>
+                    <div class="header">
+                        <button id="closePopup">X</button>
+                    </div>
+                    <div class="fields">
+                        <input type="text" id="newGroupName">
+                    </div>
+                    <div class="footer">
+                        <button id="okEditGroup">Ok</button>
+                        <button id="cancelAddGroup">Cancel</button>
+                    </div>
+                </form>
             </div>
-            <div class="controlCell">
-                <button class="okEditEntry" type="submit">Ok</button>
-                <button class="cancelEditEntry">C</button>
-            </div>
-        </form>
-        <form>
-            <div class="newGroupCreationArea">
-                <input type="text" id="newGroupName">
-                <
-            </div>
-        </form>
+        </div>
+
     </div>
 
     <script type="text/html" id="entryListTemplate">

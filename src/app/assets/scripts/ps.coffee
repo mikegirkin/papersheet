@@ -134,6 +134,32 @@ class EntryGroupListView extends Backbone.View
     @controller.setSelectedGroup(id)
 
   onAddGroupRequested: (e) ->
+    console.log("Add group clicked")
+    group = new EntryGroup()
+    @controller.views.editGroupForm.edit(group)
+    e.preventDefault()
+
+class EditGroupForm extends Backbone.View
+  el: '#editGroupForm'
+  controller: null
+
+  initialize: (controller) ->
+    @controller = controller
+    @$el.find('#closePopup').click($.proxy(@onClosePopupRequested, @))
+    @$el.find('#okEditGroup').click($.proxy(@onOk, @))
+    @$el.find('#cancelEditGroup').click($.proxy(@onCancel, @))
+
+  edit: (group) ->
+    console.log(@$el)
+    @$el.show()
+
+  onClosePopupRequested: (e) ->
+    e.preventDefault()
+
+  onOk: (e) ->
+    e.preventDefault()
+
+  onCancel: (e) ->
     e.preventDefault()
 
 
@@ -146,6 +172,7 @@ class Application extends Backbone.Router
     entryList: null
     entryGroupList: null
     editEntryForm: null
+    editGroupForm: null
 
   model:
     entries: null
@@ -157,6 +184,7 @@ class Application extends Backbone.Router
 
   initialize: () ->
     @views.editEntryForm = new EditEntryForm()
+    @views.editGroupForm = new EditGroupForm(@)
 
   index: () ->
     @model.entries = new EntryCollection()
