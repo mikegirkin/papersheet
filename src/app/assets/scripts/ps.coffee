@@ -155,6 +155,7 @@ class EditGroupForm extends Backbone.View
   edit: (group) ->
     @group = group
     @$el.show()
+    @$el.find('#groupName').val('')
     @$el.find('#groupName').focus()
 
   hide: () ->
