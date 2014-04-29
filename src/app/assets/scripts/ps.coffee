@@ -14,6 +14,7 @@ class EntryCollection extends Backbone.Collection
   url: window.urls.entries
 
 class EntryGroup extends Backbone.Model
+  urlRoot: window.urls.entryGroups
 
 class EntryGroupCollection extends Backbone.Collection
   model: EntryGroup
@@ -114,6 +115,8 @@ class EntryGroupListView extends Backbone.View
 
   initialize: (controller) ->
     @controller = controller
+    @entryGroups = @controller.model.groups
+    @entryGroups.on("reset", @render, @)
 
   render: () ->
     layout.leftSidebar.html(
@@ -134,7 +137,6 @@ class EntryGroupListView extends Backbone.View
     @controller.setSelectedGroup(id)
 
   onAddGroupRequested: (e) ->
-    console.log("Add group clicked")
     group = new EntryGroup()
     @controller.views.editGroupForm.edit(group)
     e.preventDefault()
@@ -142,24 +144,34 @@ class EntryGroupListView extends Backbone.View
 class EditGroupForm extends Backbone.View
   el: '#editGroupForm'
   controller: null
+  group: null
 
   initialize: (controller) ->
     @controller = controller
-    @$el.find('#closePopup').click($.proxy(@onClosePopupRequested, @))
+    @$el.find('#closePopup').click($.proxy(@onCancel, @))
     @$el.find('#okEditGroup').click($.proxy(@onOk, @))
     @$el.find('#cancelEditGroup').click($.proxy(@onCancel, @))
 
   edit: (group) ->
-    console.log(@$el)
+    @group = group
     @$el.show()
+    @$el.find('#groupName').focus()
 
-  onClosePopupRequested: (e) ->
-    e.preventDefault()
+  hide: () ->
+    @$el.hide()
 
   onOk: (e) ->
     e.preventDefault()
+    name = @$el.find('#groupName').val()
+    @group.set('name', name)
+    @group.save().done($.proxy(() ->
+        @controller.refetchGroups()
+        @$el.hide()
+      @
+    ))
 
   onCancel: (e) ->
+    @$el.hide()
     e.preventDefault()
 
 
@@ -190,15 +202,14 @@ class Application extends Backbone.Router
     @model.entries = new EntryCollection()
     @model.groups = new EntryGroupCollection()
     $.when(
-      @model.entries.fetch(),
-      @model.groups.fetch()
+      @refetch(),
+      @refetchGroups()
     ).done($.proxy(
       () ->
         @views.entryList = new EntryListView(@)
         @views.entryList.render()
 
         @views.entryGroupList = new EntryGroupListView(@)
-        @views.entryGroupList.entryGroups = @model.groups
         @views.entryGroupList.render()
       @
       )
@@ -212,6 +223,9 @@ class Application extends Backbone.Router
     request = { reset: true }
     if(@model.selectedGroupId != null) then request.data = { groupId: @model.selectedGroupId }
     @model.entries.fetch(request)
+
+  refetchGroups: () ->
+    @model.groups.fetch({reset: true})
 
 
 $ ->

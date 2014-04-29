@@ -9,7 +9,10 @@ case class EntryGroup(
   id: Pk[Long],
   ownerId: Long,
   name: String
-)
+) {
+  def this(ownerId: Long, name: String) =
+    this(NotAssigned, ownerId, name)
+}
 
 object EntryGroup {
   implicit val formatter = Json.format[EntryGroup]
