@@ -1,5 +1,6 @@
 @HeaderHeight: 40px;
 @MinimalWidth: 400px;
+@RowHeight: 30px;
 
 body, div, p, header, footer {
   font-family: Helvetica, FreeSans, 'Liberation Sans', Helmet, Arial, sans-serif;
@@ -121,65 +122,98 @@ header {
       right: 0;
       bottom: 0;
 
-      .entryListContainer {
-        display: table;
-        width: 100%;
-        border-collapse: collapse;
+      #entryListViewContainer{
 
-        .entryRow{
-          display: table-row;
-          border-top: 1px solid #DDD;
-          border-bottom: 1px solid #DDD;
+        .entryListContainer {
+          display: table;
           width: 100%;
-          height: 30px;
+          border-collapse: collapse;
 
-          .changeStateCell {
-            display: table-cell;
-            padding: 2px 4px;
-            width: 40px;
-          }
+          .entryRow{
+            display: table-row;
+            border-top: 1px solid #DDD;
+            border-bottom: 1px solid #DDD;
+            width: 100%;
+            height: @RowHeight;
 
-          .contentCell {
-            display: table-cell;
-            padding: 2px 2px;
-          }
-
-          .controlCell {
-            display: table-cell;
-            padding: 2px 4px;
-            width: 70px;
-          }
-
-          &[data-stateId="2"] {
-            background: #EEE;
-            .changeStateCell button {
-              display: none;
+            .changeStateCell {
+              display: table-cell;
+              padding: 2px 4px;
+              width: 40px;
             }
 
             .contentCell {
-              text-decoration: line-through;
+              display: table-cell;
+              padding: 2px 2px;
+            }
+
+            .controlCell {
+              display: table-cell;
+              padding: 2px 4px;
+              width: 70px;
+            }
+
+            &[data-stateId="2"] {
+              background: #EEE;
+              .changeStateCell button {
+                display: none;
+              }
+
+              .contentCell {
+                text-decoration: line-through;
+              }
+            }
+          }
+
+          .editEntryForm {
+            .contentCell {
+              padding-left: 0px;
+
+              input {
+                padding: 3px 1px;
+                margin: 0px;
+                border: 1px solid #999;
+                .box-sizing(border-box);
+              }
+            }
+
+            .controlCell {
+              width: 70px;
+
+              button {
+                display: inline;
+              }
             }
           }
         }
 
-        .editEntryForm {
-          .contentCell {
-            padding-left: 0px;
+        .newEntryCreationArea {
+          height: @RowHeight;
+          display: table;
 
-            input {
-              padding: 3px 1px;
-              margin: 0px;
-              border: 1px solid #999;
-              .box-sizing(border-box);
-            }
+          .textFieldContainer {
+            display: table-cell;
+            width: 100%;
+            padding: 2px 2px;
           }
 
-          .controlCell {
-            width: 70px;
+          .buttonContainer {
+            display: table-cell;
+            width: 175px;
+            padding: 2px 2px;
+          }
 
-            button {
-              display: inline;
-            }
+          input, button {
+            padding: 3px 1px;
+            .box-sizing(border-box);
+          }
+
+          #newEntryContent {
+            width: 100%;
+          }
+
+          #createNewEntryBtn {
+            width: 75px;
           }
         }
       }

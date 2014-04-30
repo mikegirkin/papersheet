@@ -54,7 +54,6 @@ abstract class EntryController extends Controller with AbstractSecurity with Dao
       vm => {
         entryDao.getById(id).map { entry =>
           if(entry.creatorId == account.id.get) {
-            println(vm)
             val updatedEntry = entryDao.update(
               entry.copy(content = vm.content, stateId = vm.stateId, groupId = vm.groupId)
             )

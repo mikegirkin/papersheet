@@ -95,7 +95,7 @@ class EntryListView extends Backbone.View
     entry = new Entry(
       content: content
       stateId: 1
-      groupId: window.app.model.selectedGroupId
+      groupId: @controller.model.applicationModel.get('selectedGroupId')
     )
     entry.save().done($.proxy(
       () -> @controller.refetch()
@@ -110,9 +110,11 @@ class EntryListView extends Backbone.View
     entryId = $(e.target).closest(".entryRow").attr('data-id')
     entry = @entries.get(entryId)
     entry.set('stateId', window.app.constants.closedStateId)
-    entry.save().done(
-      $.proxy(@render, @)
-    )
+    entry.save().done($.proxy(() ->
+        @render()
+        @controller.refetch()
+      @
+    ))
 
   onEditEntryRequested: (e) ->
     e.preventDefault()
@@ -225,9 +227,7 @@ class Application extends Backbone.Router
   index: () ->
     @model.entries = new EntryCollection()
     @model.groups = new EntryGroupCollection()
-    $.when(
-      @refetchGroups()
-    ).done($.proxy(
+    @refetchGroups().done($.proxy(
       () ->
         @views.entryGroupList = new EntryGroupListView(@)
         @views.entryGroupList.render()
