@@ -17,6 +17,14 @@ body, div, p, header, footer {
   -moz-box-sizing: @sizing;
 }
 
+.nonselectable {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 header {
   background-color: #222222;
   height: @HeaderHeight;
@@ -27,6 +35,7 @@ header {
     margin: auto;
 
     .button {
+      .nonselectable;
       display: block;
       line-height: @HeaderHeight - 4;
       height: @HeaderHeight - 4;
@@ -173,10 +182,7 @@ header {
             }
           }
         }
-
-
       }
-
     }
   }
 

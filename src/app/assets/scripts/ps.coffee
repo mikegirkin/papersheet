@@ -16,6 +16,8 @@ class Layout
     e.preventDefault()
     @controller.toggleShowDone()
 
+class ApplicationModel extends Backbone.Model
+
 class Entry extends Backbone.Model
   urlRoot: window.urls.entries
 
@@ -120,13 +122,16 @@ class EntryListView extends Backbone.View
 class EntryGroupListView extends Backbone.View
   template: _.template($("#entryGroupListTemplate").html())
   entryGroups: null
+  applicationModel: null
   controller: null
   $el: null
 
   initialize: (controller) ->
     @controller = controller
+    @applicationModel = @controller.model.applicationModel
     @entryGroups = @controller.model.groups
     @entryGroups.on("reset", @render, @)
+    @applicationModel.on('change', @onSelectedGroupChanged, @)
 
   render: () ->
     @controller.views.layout.leftSidebar.html(
@@ -142,9 +147,13 @@ class EntryGroupListView extends Backbone.View
     e.preventDefault()
     tgt = $(e.target).closest('.entryGroupRow')
     id = tgt.attr('data-id')
-    @$el.find('.entryGroupRow').removeClass('selected')
-    tgt.addClass('selected')
     @controller.setSelectedGroup(id)
+
+  onSelectedGroupChanged: () ->
+    groupId = @applicationModel.get('selectedGroupId')
+    @$el.find('.entryGroupRow').removeClass('selected')
+    @$el.find('.entryGroupRow[data-id="' + groupId + '"]').addClass('selected')
+
 
   onAddGroupRequested: (e) ->
     group = new EntryGroup()
@@ -201,13 +210,14 @@ class Application extends Backbone.Router
   model:
     entries: null
     groups: null
-    selectedGroupId: null
+    applicationModel: null
     showDone: false
 
   routes:
     "" : "index"
 
   initialize: () ->
+    @model.applicationModel = new ApplicationModel()
     @views.editEntryForm = new EditEntryForm()
     @views.editGroupForm = new EditGroupForm(@)
     @views.layout = new Layout(@)
@@ -216,21 +226,21 @@ class Application extends Backbone.Router
     @model.entries = new EntryCollection()
     @model.groups = new EntryGroupCollection()
     $.when(
-      @refetch(),
       @refetchGroups()
     ).done($.proxy(
       () ->
-        @views.entryList = new EntryListView(@)
-        @views.entryList.render()
-
         @views.entryGroupList = new EntryGroupListView(@)
         @views.entryGroupList.render()
+
+        @views.entryList = new EntryListView(@)
+
+        @setSelectedGroup(@model.groups.first().get('id'))
       @
       )
     )
 
   setSelectedGroup: (groupId) ->
-    @model.selectedGroupId = groupId
+    @model.applicationModel.set('selectedGroupId', groupId)
     @refetch()
 
   refetch: () ->
@@ -239,7 +249,7 @@ class Application extends Backbone.Router
       data: {}
     }
     if(not @model.showDone) then request.data.stateId = @constants.openedStateId
-    if(@model.selectedGroupId != null) then request.data.groupId = @model.selectedGroupId
+    if(@model.applicationModel.get('selectedGroupId') != null) then request.data.groupId = @model.applicationModel.get('selectedGroupId')
     @model.entries.fetch(request)
 
   refetchGroups: () ->
