@@ -5,6 +5,16 @@ window.urls =
 class Layout
   mainArea: $("#mainArea")
   leftSidebar: $("#leftSidebar")
+  $header: $('.headerContainer')
+  controller: null
+
+  constructor: (controller) ->
+    @controller = controller
+    @$header.find('#showDone').click($.proxy(@toggleShowDone, @))
+
+  toggleShowDone: (e) ->
+    e.preventDefault()
+    @controller.toggleShowDone()
 
 class Entry extends Backbone.Model
   urlRoot: window.urls.entries
@@ -67,7 +77,7 @@ class EntryListView extends Backbone.View
     @entries.on("reset change add remove", @onEntriesReset, @)
 
   render: () ->
-    layout.mainArea.html(
+    @controller.views.layout.mainArea.html(
       @template(
         entries: @entries
       )
@@ -119,7 +129,7 @@ class EntryGroupListView extends Backbone.View
     @entryGroups.on("reset", @render, @)
 
   render: () ->
-    layout.leftSidebar.html(
+    @controller.views.layout.leftSidebar.html(
       @template(
         entryGroups: @entryGroups
       )
@@ -186,11 +196,13 @@ class Application extends Backbone.Router
     entryGroupList: null
     editEntryForm: null
     editGroupForm: null
+    layout: null
 
   model:
     entries: null
     groups: null
     selectedGroupId: null
+    showDone: false
 
   routes:
     "" : "index"
@@ -198,6 +210,7 @@ class Application extends Backbone.Router
   initialize: () ->
     @views.editEntryForm = new EditEntryForm()
     @views.editGroupForm = new EditGroupForm(@)
+    @views.layout = new Layout(@)
 
   index: () ->
     @model.entries = new EntryCollection()
@@ -221,15 +234,21 @@ class Application extends Backbone.Router
     @refetch()
 
   refetch: () ->
-    request = { reset: true }
-    if(@model.selectedGroupId != null) then request.data = { groupId: @model.selectedGroupId }
+    request = {
+      reset: true
+      data: {}
+    }
+    if(not @model.showDone) then request.data.stateId = @constants.openedStateId
+    if(@model.selectedGroupId != null) then request.data.groupId = @model.selectedGroupId
     @model.entries.fetch(request)
 
   refetchGroups: () ->
     @model.groups.fetch({reset: true})
 
+  toggleShowDone: () ->
+    @model.showDone =  not @model.showDone
+    @refetch()
 
 $ ->
   window.app = new Application()
-  window.layout = new Layout()
   Backbone.history.start()

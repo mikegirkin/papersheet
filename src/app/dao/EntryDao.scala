@@ -14,28 +14,37 @@ case class AnormParameters(
 
 trait EntryQueryParams {
   val groupId: Option[Long]
+  val stateId: Option[Long]
 
   def anormParams(): AnormParameters = {
     val params =
-      groupId.map { id =>
-        Seq(("groupId = {groupId}", 'groupId -> toParameterValue(id)))
-      }.getOrElse(
-        Seq()
-      ).unzip(x => (x._1, x._2))
+      List(
+        groupId.map { id =>
+          ("groupId = {groupId}", 'groupId -> toParameterValue(id))
+        },
+        stateId.map { id =>
+          ("stateId = {stateId}", 'stateId -> toParameterValue(id))
+        }
+      ).flatMap(x => x)
+      .unzip(x => (x._1, x._2))
+
     AnormParameters(params._1, params._2)
   }
 }
 
 object NoParams extends EntryQueryParams {
   val groupId: Option[Long] = None
+  val stateId: Option[Long] = None
 }
 
 object EntryQueryParams {
-  def apply(groupId: Option[Long]) = {
+  def apply(groupId: Option[Long], stateId: Option[Long]) = {
     val gid = groupId
+    val sid = stateId
 
     new EntryQueryParams {
-      val groupId: Option[Long] = gid
+      val groupId = gid
+      val stateId = sid
     }
   }
 }

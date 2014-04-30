@@ -20,6 +20,37 @@ body, div, p, header, footer {
 header {
   background-color: #222222;
   height: @HeaderHeight;
+
+  .headerContainer {
+    max-width: 1200px;
+    min-width: @MinimalWidth;
+    margin: auto;
+
+    .button {
+      display: block;
+      line-height: @HeaderHeight - 4;
+      height: @HeaderHeight - 4;
+      width: @HeaderHeight - 4;
+      text-align: center;
+      margin: 2px 4px;
+      background-color: #444;
+      color: white;
+      overflow: hidden;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #777;
+      }
+    }
+
+    #logout {
+      float: right;
+    }
+
+    #showDone {
+      float: left;
+    }
+  }
 }
 
 .globalContainer {
