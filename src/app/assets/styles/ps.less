@@ -128,23 +128,30 @@ header {
           display: table;
           width: 100%;
           border-collapse: collapse;
+          table-layout: fixed;
 
           .entryRow{
             display: table-row;
             border-top: 1px solid #DDD;
             border-bottom: 1px solid #DDD;
-            width: 100%;
             height: @RowHeight;
 
             .changeStateCell {
               display: table-cell;
               padding: 2px 4px;
               width: 40px;
+
+              &:before{
+                content: "II";
+              }
             }
 
             .contentCell {
               display: table-cell;
               padding: 2px 2px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
             }
 
             .controlCell {
@@ -172,6 +179,7 @@ header {
               input {
                 padding: 3px 1px;
                 margin: 0px;
+                width: 100%;
                 border: 1px solid #999;
                 .box-sizing(border-box);
               }
