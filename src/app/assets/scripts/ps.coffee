@@ -35,9 +35,11 @@ class EntryGroupCollection extends Backbone.Collection
 class EditEntryForm
   $el: null
   $shownInsteadOf: null
+  controller: null
   modelBeingEdited: null
 
-  constructor: () ->
+  constructor: (controller) ->
+    @controller = controller
     @$el = $('.editEntryForm')
     @$el.detach()
 
@@ -51,6 +53,7 @@ class EditEntryForm
     editedEntryId = @$shownInsteadOf.attr('data-id')
     @modelBeingEdited = window.app.model.entries.get(editedEntryId)
     @$el.find('#entryContent').val(@modelBeingEdited.get('content'))
+    @$el.find('#completed').prop('checked', @modelBeingEdited.get('stateId') == @controller.constants.closedStateId)
     @$el.find('input').focus()
 
   hide: () ->
@@ -60,6 +63,8 @@ class EditEntryForm
     e.preventDefault()
     content = @$el.find('#entryContent').val()
     @modelBeingEdited.set('content', content)
+    stateId = if @$el.find('#completed').prop('checked') then @controller.constants.closedStateId else @controller.constants.openedStateId
+    @modelBeingEdited.set('stateId', stateId)
     @modelBeingEdited.save().done(
       $.proxy(@hide, @)
     )
@@ -220,7 +225,7 @@ class Application extends Backbone.Router
 
   initialize: () ->
     @model.applicationModel = new ApplicationModel()
-    @views.editEntryForm = new EditEntryForm()
+    @views.editEntryForm = new EditEntryForm(@)
     @views.editGroupForm = new EditGroupForm(@)
     @views.layout = new Layout(@)
 
