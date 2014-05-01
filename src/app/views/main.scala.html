@@ -18,6 +18,9 @@
         </div>
         <div class="invisible" id="invisibleContainer">
             <form class="editEntryForm entryRow">
+                <div class="dragCell">
+
+                </div>
                 <div class="changeStateCell">
                     <input type="checkbox" id="completed"/>
                 </div>
@@ -65,6 +68,9 @@
             <div class="entryListContainer">
                 <% entries.each(function (entry) { %>
                     <div class="entryRow" data-stateId='<%= entry.get("stateId") %>' data-id="<%= entry.get('id') %>">
+                        <div class="dragCell">
+
+                        </div>
                         <div class="changeStateCell">
                             <button class="changeEntryState">F</button>
                         </div>
