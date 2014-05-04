@@ -49,6 +49,17 @@ class EditEntryForm
   modelBeingEdited: null
   isActive: false
 
+  validationRules:
+    rules:
+      entryContent:
+        minlength: 1
+        required: true
+    errorPlacement: (error, elem) ->
+    highlight: (elem) ->
+      $(elem).addClass('has-error')
+    unhighlight: (elem) ->
+      $(elem).removeClass('has-error')
+
   constructor: (controller) ->
     @controller = controller
     @$el = $('.editEntryForm')
@@ -76,6 +87,7 @@ class EditEntryForm
 
   onOkEditEntry: (e) ->
     e.preventDefault()
+    if !@validate() then return
     content = @$el.find('#entryContent').val()
     @modelBeingEdited.set('content', content)
     stateId = if @$el.find('#completed').prop('checked') then @controller.constants.closedStateId else @controller.constants.openedStateId
@@ -88,10 +100,25 @@ class EditEntryForm
     e.preventDefault()
     @hide()
 
+  validate: () ->
+    @$el.validate(@validationRules)
+    @$el.valid()
+
 class EntryListView extends Backbone.View
   template: _.template($("#entryListTemplate").html())
   entries: null
   controller: null
+  $form: null
+  validationRules:
+    rules:
+      newEntryContent:
+        minlength: 1
+        required: true
+    errorPlacement: (error, elem) ->
+    highlight: (elem) ->
+      $(elem).addClass('has-error')
+    unhighlight: (elem) ->
+      $(elem).removeClass('has-error')
 
   initialize: (controller) ->
     @controller = controller
@@ -105,12 +132,14 @@ class EntryListView extends Backbone.View
       )
     )
     @$el = $("#entryListViewContainer")
+    @$form = @$el.find('#createEntryForm')
     @$el.find('#createNewEntryBtn').click($.proxy(@onCreateRequested, @))
     @$el.find(".changeEntryState").click($.proxy(@onChangeEntryStateRequested, @))
     @$el.on('click', '.editEntry', $.proxy(@onEditEntryRequested, @))
 
   onCreateRequested: (e) ->
     e.preventDefault()
+    if(!@valid()) then return
     content = @$el.find("#newEntryContent").val()
     entry = new Entry(
       content: content
@@ -141,6 +170,9 @@ class EntryListView extends Backbone.View
     $editedEl = $(e.target).closest('.entryRow')
     window.app.views.editEntryForm.edit($editedEl)
 
+  valid: () ->
+    @$form.validate(@validationRules)
+    @$form.valid()
 
 class EntryGroupListView extends Backbone.View
   template: _.template($("#entryGroupListTemplate").html())
@@ -189,31 +221,37 @@ class EditGroupForm extends Backbone.View
   controller: null
   group: null
 
+  validationRules:
+    rules:
+      groupName:
+        minlength: 1
+        required: true
+    errorPlacement: (error, elem) ->
+    highlight: (elem) ->
+      $(elem).addClass('has-error')
+    unhighlight: (elem) ->
+      $(elem).removeClass('has-error')
+
   initialize: (controller) ->
     @controller = controller
     @$el.find('#closePopup').click($.proxy(@onCancel, @))
     @$el.find('#okEditGroup').click($.proxy(@onOk, @))
     @$el.find('#cancelEditGroup').click($.proxy(@onCancel, @))
     @$input = @$el.find('#groupName')
-    @$input.keyup($.proxy(
-      () -> @validate()
-      @
-    ))
 
   edit: (group) ->
     @group = group
     @$el.show()
     @$input.val('')
     @$input.focus()
-    @$input.removeClass('invalid')
 
   hide: () ->
     @$el.hide()
 
   onOk: (e) ->
     e.preventDefault()
-    name = @$input.val()
     if (!@valid()) then return
+    name = @$input.val()
     @group.set('name', name)
     @group.save().done($.proxy(() ->
         @controller.refetchGroups()
@@ -225,21 +263,9 @@ class EditGroupForm extends Backbone.View
     @$el.hide()
     e.preventDefault()
 
-  validate: () ->
-    name = @$input.val()
-    if(not name)
-      @$input.addClass('invalid')
-      false
-    else
-      @$input.removeClass('invalid')
-      true
-
   valid: () ->
-    if !@validate()
-      @$el.find('.invalid').first().focus()
-      false
-    else
-      true
+    @$el.find('form').validate(@validationRules)
+    @$el.find('form').valid()
 
 
 class Application extends Backbone.Router

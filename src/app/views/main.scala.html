@@ -22,7 +22,7 @@
                     <input type="checkbox" class="completed" id="completed"/>
                 </div>
                 <div class="contentCell">
-                    <input type="text" id="entryContent"/>
+                    <input type="text" id="entryContent" name="entryContent"/>
                 </div>
                 <div class="controlCell">
                     <button class="okEditEntry" type="submit"></button>
@@ -39,7 +39,7 @@
                         <button id="closePopup" type="button"></button>
                     </div>
                     <div class="fields">
-                        <input type="text" id="groupName">
+                        <input type="text" id="groupName" name="groupName">
                     </div>
                     <div class="footer">
                         <button id="okEditGroup" type="submit">Ok</button>
@@ -53,10 +53,10 @@
 
     <script type="text/html" id="entryListTemplate">
         <div id="entryListViewContainer">
-            <form>
+            <form id="createEntryForm">
                 <div class="newEntryCreationArea">
                     <div class="textFieldContainer">
-                        <input type="text" id="newEntryContent"/>
+                        <input type="text" id="newEntryContent" name="newEntryContent"/>
                     </div>
                     <div class="buttonContainer">
                         <button id="createNewEntryBtn" type="submit">Create</button>
