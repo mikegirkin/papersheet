@@ -25,6 +25,10 @@ class Layout
       @$header.find("#showDone").addClass('doneNotShown')
       @$header.find("#showDone").removeClass('doneShown')
 
+class ValidatableView extends Backbone.View
+  valid: () ->
+    @$form.validate(@validationRules)
+    @$form.valid()
 
 class ApplicationModel extends Backbone.Model
 
@@ -42,9 +46,10 @@ class EntryGroupCollection extends Backbone.Collection
   model: EntryGroup
   url: window.urls.entryGroups
 
-class EditEntryForm
+class EditEntryForm extends ValidatableView
   $el: null
   $shownInsteadOf: null
+  $form: null
   controller: null
   modelBeingEdited: null
   isActive: false
@@ -63,6 +68,7 @@ class EditEntryForm
   constructor: (controller) ->
     @controller = controller
     @$el = $('.editEntryForm')
+    @$form = $('.editEntryForm')
     @$el.detach()
 
   edit: (el) ->
@@ -87,7 +93,7 @@ class EditEntryForm
 
   onOkEditEntry: (e) ->
     e.preventDefault()
-    if !@validate() then return
+    if !@valid() then return
     content = @$el.find('#entryContent').val()
     @modelBeingEdited.set('content', content)
     stateId = if @$el.find('#completed').prop('checked') then @controller.constants.closedStateId else @controller.constants.openedStateId
@@ -100,11 +106,7 @@ class EditEntryForm
     e.preventDefault()
     @hide()
 
-  validate: () ->
-    @$el.validate(@validationRules)
-    @$el.valid()
-
-class EntryListView extends Backbone.View
+class EntryListView extends ValidatableView
   template: _.template($("#entryListTemplate").html())
   entries: null
   controller: null
@@ -170,10 +172,6 @@ class EntryListView extends Backbone.View
     $editedEl = $(e.target).closest('.entryRow')
     window.app.views.editEntryForm.edit($editedEl)
 
-  valid: () ->
-    @$form.validate(@validationRules)
-    @$form.valid()
-
 class EntryGroupListView extends Backbone.View
   template: _.template($("#entryGroupListTemplate").html())
   entryGroups: null
@@ -215,9 +213,10 @@ class EntryGroupListView extends Backbone.View
     @controller.views.editGroupForm.edit(group)
     e.preventDefault()
 
-class EditGroupForm extends Backbone.View
+class EditGroupForm extends ValidatableView
   el: '#editGroupForm'
   $input: null
+  $form: null
   controller: null
   group: null
 
@@ -237,6 +236,7 @@ class EditGroupForm extends Backbone.View
     @$el.find('#closePopup').click($.proxy(@onCancel, @))
     @$el.find('#okEditGroup').click($.proxy(@onOk, @))
     @$el.find('#cancelEditGroup').click($.proxy(@onCancel, @))
+    @$form = @$el.find('form')
     @$input = @$el.find('#groupName')
 
   edit: (group) ->
@@ -262,10 +262,6 @@ class EditGroupForm extends Backbone.View
   onCancel: (e) ->
     @$el.hide()
     e.preventDefault()
-
-  valid: () ->
-    @$el.find('form').validate(@validationRules)
-    @$el.find('form').valid()
 
 
 class Application extends Backbone.Router
