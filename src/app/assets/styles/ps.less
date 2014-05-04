@@ -1,6 +1,7 @@
 @HeaderHeight: 40px;
 @MinimalWidth: 400px;
-@RowHeight: 30px;
+@RowHeight: 32px;
+@RowControlElementHeight: @RowHeight - 7;
 @LightLightGray: #F5F7FA;
 @LightGray: #E6E9ED;
 @LightMediumGray: #CCD1D9;
@@ -12,14 +13,14 @@
 @DarkGreen: #3c763d;
 @LightRed: #FC6E51;
 @Red: #DA4453;
-@RowControlElementHeight: @RowHeight - 7;
 
 
 body, div, p, header, footer, input, button {
-  font-family: Helvetica, sans-serif;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 13px;
   margin: 0;
   padding: 0;
+  -webkit-font-smoothing: antialiased;
 }
 
 .invisible {
@@ -142,7 +143,7 @@ header {
 
         .entryGroupRow {
           cursor: pointer;
-          padding: 4px 0px;
+          padding: 4px;
 
           &.selected {
             font-weight: bold;
@@ -154,7 +155,24 @@ header {
         }
 
         #addGroup {
-          .entryGroupRow;
+          height: @RowHeight;
+          cursor: pointer;
+          line-height: @RowHeight;
+          padding: 0px 4px;
+
+          &:after {
+            .iconified;
+            font-size: 14px;
+            content: "\f067";
+            float: right;
+            padding-top: 9px;
+          }
+
+          &:hover {
+            color: @DarkGreen;
+            text-decoration: underline;
+            background: @LightGray;
+          }
         }
       }
 
@@ -378,7 +396,7 @@ header {
 
               &:before {
                 .iconified;
-                font-size: 13px;
+                font-size: 14px;
                 padding-right: 6px;
                 display: inline;
                 content: "\f067";

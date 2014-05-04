@@ -82,14 +82,14 @@
 
     <script type="text/html" id="entryGroupListTemplate">
         <div id="entryGroupListContainer">
+            <div id="addGroup">
+                Add group
+            </div>
             <% entryGroups.each(function (group) { %>
                 <div class="entryGroupRow" data-id="<%= group.get('id') %>">
                     <%= group.get('name') %>
                 </div>
             <% }); %>
-            <div id="addGroup">
-                Add group
-            </div>
         </div>
     </script>
 }
