@@ -53,10 +53,14 @@ input {
   font-family: FontAwesome;
 }
 
+.invalid {
+  border: 1px solid @Red;
+}
+
 .okButton {
-  background: white;
-  border: 1px solid @DarkGreen;
-  color: @DarkGreen;
+  background: @LightGray;
+  color: @LightDarkGray;
+  border: 0;
   cursor: pointer;
   outline: none;
 
@@ -70,14 +74,10 @@ input {
   }
 }
 
-.invalid {
-  border: 1px solid @Red;
-}
-
 .cancelButton {
-  background: white;
-  color: @Red;
-  border: 1px solid @Red;
+  background: @LightGray;
+  color: @LightDarkGray;
+  border: 0;
   outline: none;
   cursor: pointer;
 
@@ -247,7 +247,7 @@ header {
               display: table-cell;
               text-align: center;
               vertical-align: middle;
-              width: 30px;
+              width: 22px;
               padding-left: 4px;
             }
 
@@ -257,7 +257,7 @@ header {
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
-              padding-left: 2px;
+              padding-left: 4px;
             }
 
             .controlCell {
@@ -266,10 +266,13 @@ header {
               width: 58px;
 
               .editEntry {
+                display: inline-block;
                 background: white;
                 border: 0;
                 outline: none;
                 color: @LightMediumGray;
+                width: @RowControlElementHeight;
+                height: @RowControlElementHeight;
 
                 &:before {
                   .iconified;
@@ -512,6 +515,30 @@ header {
           }
         }
       }
+    }
+  }
+
+
+}
+
+.loginContainer {
+  position: absolute;
+  background: @DarkGray;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  .innerLoginContainer {
+    background: @LightGray;
+    margin-top: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    padding: 20px;
+
+    .welcome {
+
     }
   }
 

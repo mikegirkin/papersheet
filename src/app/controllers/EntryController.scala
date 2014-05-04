@@ -11,6 +11,7 @@ import common._
 import dao._
 import model._
 import JsonFormatHelpers._
+import authentication.{SecureSocialSecurity, AbstractSecurity}
 
 abstract class EntryController extends Controller with AbstractSecurity with DaoProvider {
 

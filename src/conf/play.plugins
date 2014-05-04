@@ -1,7 +1,8 @@
 9994:securesocial.core.DefaultAuthenticatorStore
 9995:securesocial.core.DefaultIdGenerator
 9997:securesocial.controllers.DefaultTemplatesPlugin
-9998:common.UserServiceImpl
+#9997:authentication.AuthenticationPlugin
+9998:authentication.UserServiceImpl
 #10002:securesocial.core.providers.GoogleProvider
 
 1500:com.typesafe.plugin.CommonsMailerPlugin

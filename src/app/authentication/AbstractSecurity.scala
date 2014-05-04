@@ -1,4 +1,4 @@
-package common
+package authentication
 
 import play.api.mvc._
 import play.api.libs.json._

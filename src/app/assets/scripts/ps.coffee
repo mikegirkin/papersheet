@@ -47,6 +47,7 @@ class EditEntryForm
   $shownInsteadOf: null
   controller: null
   modelBeingEdited: null
+  isActive: false
 
   constructor: (controller) ->
     @controller = controller
@@ -54,6 +55,7 @@ class EditEntryForm
     @$el.detach()
 
   edit: (el) ->
+    if @isActive then @hide()
     @$shownInsteadOf = el
     @$shownInsteadOf.replaceWith(@$el)
     @$el.find('.okEditEntry').click(
@@ -65,9 +67,12 @@ class EditEntryForm
     @$el.find('#entryContent').val(@modelBeingEdited.get('content'))
     @$el.find('#completed').prop('checked', @modelBeingEdited.get('stateId') == @controller.constants.closedStateId)
     @$el.find('input').focus()
+    @isActive = true
 
   hide: () ->
+    if !@isActive then return
     @$el.replaceWith(@$shownInsteadOf)
+    @isActive = false
 
   onOkEditEntry: (e) ->
     e.preventDefault()

@@ -1,0 +1,34 @@
+@(form: Form[(String, String)], msg:Option[String])
+
+@layout("PS Login") {
+    <div class="loginContainer">
+        <div class="innerLoginContainer">
+            <form method="post" action="@securesocial.core.providers.utils.RoutesHelper.authenticateByPost("userpass")">
+                <div class="welcome">
+
+                </div>
+                <div class="message invisible">
+
+                </div>
+                <div class="loginFormContainer">
+                        <div class="fieldContainer">
+                            <label>Login</label>
+                            <input type="text" id="login" name="login" />
+                        </div>
+                        <div class="fieldContainer">
+                            <label>Password</label>
+                            <input type="text" id="password" name="password" />
+                        </div>
+                </div>
+                <div class="buttonContainer">
+                    <button class="loginButton" type="submit">Login</button>
+                    <button class="registerButton" type="button">Register</button>
+                    <button class="forgotPasswordButton" type="button">Forgot password?</button>
+                </div>
+                <div class="additionalInfo">
+
+                </div>
+            </form>
+        </div>
+    </div>
+}
