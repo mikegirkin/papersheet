@@ -14,13 +14,18 @@
 @LightRed: #FC6E51;
 @Red: #DA4453;
 
-
 body, div, p, header, footer, input, button {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 13px;
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
+}
+
+input {
+  border: 1px solid @MediumGray;
+  padding-left: 3px;
+  padding-right: 3px;
 }
 
 .invisible {
@@ -63,6 +68,10 @@ body, div, p, header, footer, input, button {
   &:active {
     background: @LightGreen;
   }
+}
+
+.invalid {
+  border: 1px solid @Red;
 }
 
 .cancelButton {

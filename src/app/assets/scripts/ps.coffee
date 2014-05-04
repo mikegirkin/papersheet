@@ -172,7 +172,6 @@ class EntryGroupListView extends Backbone.View
     @$el.find('.entryGroupRow').removeClass('selected')
     @$el.find('.entryGroupRow[data-id="' + groupId + '"]').addClass('selected')
 
-
   onAddGroupRequested: (e) ->
     group = new EntryGroup()
     @controller.views.editGroupForm.edit(group)
@@ -180,6 +179,7 @@ class EntryGroupListView extends Backbone.View
 
 class EditGroupForm extends Backbone.View
   el: '#editGroupForm'
+  $input: null
   controller: null
   group: null
 
@@ -188,19 +188,26 @@ class EditGroupForm extends Backbone.View
     @$el.find('#closePopup').click($.proxy(@onCancel, @))
     @$el.find('#okEditGroup').click($.proxy(@onOk, @))
     @$el.find('#cancelEditGroup').click($.proxy(@onCancel, @))
+    @$input = @$el.find('#groupName')
+    @$input.keyup($.proxy(
+      () -> @validate()
+      @
+    ))
 
   edit: (group) ->
     @group = group
     @$el.show()
-    @$el.find('#groupName').val('')
-    @$el.find('#groupName').focus()
+    @$input.val('')
+    @$input.focus()
+    @$input.removeClass('invalid')
 
   hide: () ->
     @$el.hide()
 
   onOk: (e) ->
     e.preventDefault()
-    name = @$el.find('#groupName').val()
+    name = @$input.val()
+    if (!@valid()) then return
     @group.set('name', name)
     @group.save().done($.proxy(() ->
         @controller.refetchGroups()
@@ -211,6 +218,22 @@ class EditGroupForm extends Backbone.View
   onCancel: (e) ->
     @$el.hide()
     e.preventDefault()
+
+  validate: () ->
+    name = @$input.val()
+    if(not name)
+      @$input.addClass('invalid')
+      false
+    else
+      @$input.removeClass('invalid')
+      true
+
+  valid: () ->
+    if !@validate()
+      @$el.find('.invalid').first().focus()
+      false
+    else
+      true
 
 
 class Application extends Backbone.Router
