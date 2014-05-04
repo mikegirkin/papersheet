@@ -7,6 +7,12 @@
 @MediumGray: #AAB2BD;
 @LightDarkGray: #656D78;
 @DarkGray: #434A54;
+@LightGreen: #A0D468;
+@Green: #8CC152;
+@DarkGreen: #3c763d;
+@LightRed: #FC6E51;
+@Red: #DA4453;
+@RowControlElementHeight: @RowHeight - 7;
 
 
 body, div, p, header, footer, input, button {
@@ -196,7 +202,7 @@ header {
             .controlCell {
               display: table-cell;
               vertical-align: middle;
-              width: 70px;
+              width: 54px;
 
               .editEntry {
                 background: white;
@@ -268,11 +274,15 @@ header {
           }
 
           .editEntryForm {
+
             height: @RowHeight;
+
             .contentCell {
+              padding-right: 4px;
               padding-left: 0px;
 
               input {
+                outline: none;
                 padding: 3px 1px;
                 margin: 0px;
                 width: 100%;
@@ -282,26 +292,52 @@ header {
             }
 
             .controlCell {
-              width: 70px;
-
               .okEditEntry {
                 display: inline-block;
+                background: white;
+                color: @DarkGreen;
+                border: 1px solid @DarkGreen;
+                outline: none;
+                width: @RowControlElementHeight;
+                height: @RowControlElementHeight;
 
                 &:before {
-                  .iconified
+                  .iconified;
+                  content:"\f00c";
                 }
 
                 &:hover {
-
+                  color: white;
+                  background: @Green;
                 }
 
                 &:active {
-
+                  background: @LightGreen;
                 }
               }
 
               .cancelEditEntry {
                 display: inline-block;
+                background: white;
+                color: @Red;
+                border: 1px solid @Red;
+                outline: none;
+                width: @RowControlElementHeight;
+                height: @RowControlElementHeight;
+
+                &:before {
+                  .iconified;
+                  content:"\f00d";
+                }
+
+                &:hover {
+                  color: white;
+                  background: @Red;
+                }
+
+                &:active {
+                  background: @LightRed;
+                }
               }
             }
           }
@@ -314,26 +350,49 @@ header {
           .textFieldContainer {
             display: table-cell;
             width: 100%;
-            padding: 2px 2px;
+            vertical-align: middle;
+            padding-left: 4px;
+            padding-right: 4px;
+
+            #newEntryContent {
+              width: 100%;
+              height: @RowControlElementHeight;
+              .box-sizing(border-box);
+              outline: none;
+            }
           }
 
           .buttonContainer {
             display: table-cell;
-            width: 175px;
-            padding: 2px 2px;
-          }
+            vertical-align: middle;
+            padding-right: 4px;
 
-          input, button {
-            padding: 3px 1px;
-            .box-sizing(border-box);
-          }
+            #createNewEntryBtn {
+              width: 80px;
+              color: @DarkGreen;
+              background: white;
+              outline: none;
+              border: 1px solid @DarkGreen;
+              height: @RowControlElementHeight;
+              .box-sizing(border-box);
 
-          #newEntryContent {
-            width: 100%;
-          }
+              &:before {
+                .iconified;
+                font-size: 13px;
+                padding-right: 6px;
+                display: inline;
+                content: "\f067";
+              }
 
-          #createNewEntryBtn {
-            width: 75px;
+              &:hover {
+                background: @Green;
+                color: white;
+              }
+
+              &:active {
+                background: @LightGreen;
+              }
+            }
           }
         }
       }
