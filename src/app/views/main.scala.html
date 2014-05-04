@@ -3,8 +3,8 @@
 @layout("ps") {
     <header>
         <div class="headerContainer">
-            <a class="button" id="showDone">DN</a>
-            <a class="button" id="logout" href="/logout">Logout</a>
+            <a class="button doneNotShown" id="showDone"></a>
+            <a class="button" id="logout" href="/logout"></a>
         </div>
     </header>
     <div class="globalContainer">
@@ -18,11 +18,8 @@
         </div>
         <div class="invisible" id="invisibleContainer">
             <form class="editEntryForm entryRow">
-                <div class="dragCell">
-
-                </div>
                 <div class="changeStateCell">
-                    <input type="checkbox" id="completed"/>
+                    <input type="checkbox" class="completed" id="completed"/>
                 </div>
                 <div class="contentCell">
                     <input type="text" id="entryContent"/>
@@ -68,17 +65,14 @@
             <div class="entryListContainer">
                 <% entries.each(function (entry) { %>
                     <div class="entryRow" data-stateId='<%= entry.get("stateId") %>' data-id="<%= entry.get('id') %>">
-                        <div class="dragCell">
-
-                        </div>
                         <div class="changeStateCell">
-                            <button class="changeEntryState">F</button>
+                            <button class="changeEntryState"></button>
                         </div>
                         <div class="contentCell">
                             <%= entry.get('content') %>
                         </div>
                         <div class="controlCell">
-                            <button class="editEntry">E</button>
+                            <button class="editEntry"></button>
                         </div>
                     </div>
                 <% }); %>

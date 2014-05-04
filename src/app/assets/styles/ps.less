@@ -1,9 +1,16 @@
 @HeaderHeight: 40px;
 @MinimalWidth: 400px;
 @RowHeight: 30px;
+@LightLightGray: #F5F7FA;
+@LightGray: #E6E9ED;
+@LightMediumGray: #CCD1D9;
+@MediumGray: #AAB2BD;
+@LightDarkGray: #656D78;
+@DarkGray: #434A54;
 
-body, div, p, header, footer {
-  font-family: Helvetica, FreeSans, 'Liberation Sans', Helmet, Arial, sans-serif;
+
+body, div, p, header, footer, input, button {
+  font-family: Helvetica, sans-serif;
   font-size: 13px;
   margin: 0;
   padding: 0;
@@ -26,8 +33,16 @@ body, div, p, header, footer {
   user-select: none;
 }
 
+.iconified {
+  font-size: 20px;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  font-family: FontAwesome;
+}
+
 header {
-  background-color: #222222;
+  background-color: @DarkGray;
   height: @HeaderHeight;
 
   .headerContainer {
@@ -38,27 +53,51 @@ header {
     .button {
       .nonselectable;
       display: block;
-      line-height: @HeaderHeight - 4;
       height: @HeaderHeight - 4;
       width: @HeaderHeight - 4;
       text-align: center;
       margin: 2px 4px;
-      background-color: #444;
-      color: white;
+      color: @LightMediumGray;
       overflow: hidden;
       cursor: pointer;
+      vertical-align: middle;
 
       &:hover {
-        background-color: #777;
+        color: white;
       }
     }
 
     #logout {
+      .box-sizing(border-box);
       float: right;
+      text-decoration: none;
+      padding-top: 8px;
+
+      &:before {
+        .iconified;
+        content: "\f011";
+      }
     }
 
     #showDone {
       float: left;
+      padding-top: 7px;
+      .box-sizing(border-box);
+      &.doneShown {
+        &:before {
+          .iconified;
+          content: "\f06e";
+          text-decoration: none;
+        }
+      }
+
+      &.doneNotShown {
+        &:before {
+          .iconified;
+          content: "\f070";
+          text-decoration: none;
+        }
+      }
     }
   }
 }
@@ -135,48 +174,101 @@ header {
             border-top: 1px solid #DDD;
             border-bottom: 1px solid #DDD;
             height: @RowHeight;
-
-            .dragCell {
-              display: table-cell;
-              padding: 1px 3px;
-              width: 2px;
-              background: #999999;
-            }
+            padding: 0;
 
             .changeStateCell {
               display: table-cell;
-              width: 30px;
               text-align: center;
               vertical-align: middle;
+              width: 30px;
+              padding-left: 4px;
             }
 
             .contentCell {
               display: table-cell;
-              padding: 2px 2px;
+              vertical-align: middle;
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
+              padding-left: 2px;
             }
 
             .controlCell {
               display: table-cell;
-              padding: 2px 4px;
+              vertical-align: middle;
               width: 70px;
+
+              .editEntry {
+                background: white;
+                border: 0;
+                outline: none;
+                color: @LightMediumGray;
+
+                &:before {
+                  .iconified;
+                  content: "\f040";
+                }
+
+                &:hover{
+                  color: @LightDarkGray;
+                }
+
+                &:active{
+                  color: @DarkGray;
+                  border: 0;
+                }
+              }
             }
 
             &[data-stateId="2"] {
-              background: #EEE;
-              .changeStateCell button {
-                display: none;
+              background: @LightLightGray;
+
+              .changeStateCell {
+                .changeEntryState {
+                  display: none;
+                }
               }
 
               .contentCell {
                 text-decoration: line-through;
               }
+
+              .controlCell {
+                .editEntry {
+                  background: @LightLightGray;
+                }
+              }
+            }
+
+            &[data-stateId="1"] {
+
+              .changeStateCell{
+                .changeEntryState {
+                  display: block;
+                  background: white;
+                  border: 0;
+                  outline: none;
+                  color: @LightMediumGray;
+
+                  &:before {
+                    .iconified;
+                    content: "\f00c";
+                  }
+
+                  &:hover{
+                    color: @LightDarkGray;
+                  }
+
+                  &:active{
+                    color: @DarkGray;
+                  }
+                }
+              }
             }
           }
 
           .editEntryForm {
+            height: @RowHeight;
             .contentCell {
               padding-left: 0px;
 
@@ -192,8 +284,24 @@ header {
             .controlCell {
               width: 70px;
 
-              button {
-                display: inline;
+              .okEditEntry {
+                display: inline-block;
+
+                &:before {
+                  .iconified
+                }
+
+                &:hover {
+
+                }
+
+                &:active {
+
+                }
+              }
+
+              .cancelEditEntry {
+                display: inline-block;
               }
             }
           }

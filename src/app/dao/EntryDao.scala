@@ -108,7 +108,7 @@ class PsqlEntryDao extends EntryDao with SqlHelpers {
       from Entry
       where
          $whereString
-      order by id
+      order by created desc
     """)(
       (anormParams.parameterParts :+ ('creatorId -> toParameterValue(accountId))):_*
     )(

@@ -11,10 +11,20 @@ class Layout
   constructor: (controller) ->
     @controller = controller
     @$header.find('#showDone').click($.proxy(@toggleShowDone, @))
+    @controller.model.applicationModel.on("change reset", @onApplicationModelChange, @)
 
   toggleShowDone: (e) ->
     e.preventDefault()
     @controller.toggleShowDone()
+
+  onApplicationModelChange: () ->
+    if @controller.model.applicationModel.get('showDone')
+      @$header.find("#showDone").removeClass('doneNotShown')
+      @$header.find("#showDone").addClass('doneShown')
+    else
+      @$header.find("#showDone").addClass('doneNotShown')
+      @$header.find("#showDone").removeClass('doneShown')
+
 
 class ApplicationModel extends Backbone.Model
 
@@ -126,6 +136,7 @@ class EntryListView extends Backbone.View
     $editedEl = $(e.target).closest('.entryRow')
     window.app.views.editEntryForm.edit($editedEl)
 
+
 class EntryGroupListView extends Backbone.View
   template: _.template($("#entryGroupListTemplate").html())
   entryGroups: null
@@ -218,13 +229,13 @@ class Application extends Backbone.Router
     entries: null
     groups: null
     applicationModel: null
-    showDone: false
 
   routes:
     "" : "index"
 
   initialize: () ->
     @model.applicationModel = new ApplicationModel()
+    @model.applicationModel.set("showDone", false)
     @views.editEntryForm = new EditEntryForm(@)
     @views.editGroupForm = new EditGroupForm(@)
     @views.layout = new Layout(@)
@@ -253,7 +264,7 @@ class Application extends Backbone.Router
       reset: true
       data: {}
     }
-    if(not @model.showDone) then request.data.stateId = @constants.openedStateId
+    if(not @model.applicationModel.get('showDone')) then request.data.stateId = @constants.openedStateId
     if(@model.applicationModel.get('selectedGroupId') != null) then request.data.groupId = @model.applicationModel.get('selectedGroupId')
     @model.entries.fetch(request)
 
@@ -261,7 +272,7 @@ class Application extends Backbone.Router
     @model.groups.fetch({reset: true})
 
   toggleShowDone: () ->
-    @model.showDone =  not @model.showDone
+    @model.applicationModel.set('showDone', not @model.applicationModel.get('showDone'))
     @refetch()
 
 $ ->
