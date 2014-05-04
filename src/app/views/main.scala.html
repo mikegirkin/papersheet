@@ -87,7 +87,7 @@
                 Add group
             </div>
             <% entryGroups.each(function (group) { %>
-                <div class="entryGroupRow" data-id="<%= group.get('id') %>">
+                <div class="entryGroupRow <%= selectedGroupId == group.get('id') ? 'selected' : '' %>" data-id="<%= group.get('id') %>">
                     <%= group.get('name') %>
                 </div>
             <% }); %>

@@ -155,6 +155,7 @@ class EntryGroupListView extends Backbone.View
     @controller.views.layout.leftSidebar.html(
       @template(
         entryGroups: @entryGroups
+        selectedGroupId: @applicationModel.get('selectedGroupId')
       )
     )
     @$el = $('#entryGroupListContainer')
