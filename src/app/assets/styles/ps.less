@@ -48,6 +48,40 @@ body, div, p, header, footer, input, button {
   font-family: FontAwesome;
 }
 
+.okButton {
+  background: white;
+  border: 1px solid @DarkGreen;
+  color: @DarkGreen;
+  cursor: pointer;
+  outline: none;
+
+  &:hover {
+    background: @DarkGreen;
+    color: white;
+  }
+
+  &:active {
+    background: @LightGreen;
+  }
+}
+
+.cancelButton {
+  background: white;
+  color: @Red;
+  border: 1px solid @Red;
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+    background: @Red;
+  }
+
+  &:active {
+    background: @LightRed;
+  }
+}
+
 header {
   background-color: @DarkGray;
   height: @HeaderHeight;
@@ -220,7 +254,7 @@ header {
             .controlCell {
               display: table-cell;
               vertical-align: middle;
-              width: 54px;
+              width: 58px;
 
               .editEntry {
                 background: white;
@@ -301,7 +335,7 @@ header {
 
               input {
                 outline: none;
-                padding: 3px 1px;
+                height: @RowControlElementHeight;
                 margin: 0px;
                 width: 100%;
                 border: 1px solid #999;
@@ -311,50 +345,26 @@ header {
 
             .controlCell {
               .okEditEntry {
+                .okButton;
                 display: inline-block;
-                background: white;
-                color: @DarkGreen;
-                border: 1px solid @DarkGreen;
-                outline: none;
                 width: @RowControlElementHeight;
                 height: @RowControlElementHeight;
 
                 &:before {
                   .iconified;
-                  content:"\f00c";
-                }
-
-                &:hover {
-                  color: white;
-                  background: @Green;
-                }
-
-                &:active {
-                  background: @LightGreen;
+                  content:"\f10c";
                 }
               }
 
               .cancelEditEntry {
+                .cancelButton;
                 display: inline-block;
-                background: white;
-                color: @Red;
-                border: 1px solid @Red;
-                outline: none;
                 width: @RowControlElementHeight;
                 height: @RowControlElementHeight;
 
                 &:before {
                   .iconified;
                   content:"\f00d";
-                }
-
-                &:hover {
-                  color: white;
-                  background: @Red;
-                }
-
-                &:active {
-                  background: @LightRed;
                 }
               }
             }
@@ -386,11 +396,8 @@ header {
             padding-right: 4px;
 
             #createNewEntryBtn {
+              .okButton;
               width: 80px;
-              color: @DarkGreen;
-              background: white;
-              outline: none;
-              border: 1px solid @DarkGreen;
               height: @RowControlElementHeight;
               .box-sizing(border-box);
 
@@ -400,15 +407,6 @@ header {
                 padding-right: 6px;
                 display: inline;
                 content: "\f067";
-              }
-
-              &:hover {
-                background: @Green;
-                color: white;
-              }
-
-              &:active {
-                background: @LightGreen;
               }
             }
           }
@@ -431,20 +429,80 @@ header {
     .popup {
       background: white;
       margin: 0 auto;
+      padding: 8px;
       width: @MinimalWidth - 10;
+      border: 1px solid @DarkGray;
 
       .header {
+        padding-bottom: 8px;
 
+        .headerContent {
+          font-weight: bold;
+        }
+
+        #closePopup {
+          color: @LightMediumGray;
+          border: 0;
+          outline: 0;
+          background: white;
+          float: right;
+
+          &:before {
+            .iconified;
+            content: "\f00d";
+            position:relative;
+            top: -2px;
+          }
+
+          &:hover {
+            color: @LightDarkGray;
+          }
+        }
       }
 
       .fields {
+        padding: 8px;
 
+        input {
+          width: 100%;
+          .box-sizing(border-box);
+          outline: none;
+          height: @RowControlElementHeight;
+        }
       }
 
       .footer {
+        text-align: center;
 
+        #okEditGroup {
+          .okButton;
+          height: @RowHeight;
+          min-width: 70px;
+          font-weight: bold;
+          margin:0;
+
+          &:before {
+            .iconified;
+            content: "\f10c";
+            font-size: 14px;
+            padding-right: 4px;
+          }
+        }
+
+        #cancelEditGroup {
+          .cancelButton;
+          height: @RowHeight;
+          min-width: 70px;
+          font-weight: bold;
+
+          &:before {
+            .iconified;
+            content: "\f00d";
+            font-size: 14px;
+            padding-right: 4px;
+          }
+        }
       }
-
     }
   }
 
