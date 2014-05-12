@@ -11,9 +11,7 @@ import securesocial.controllers.Registration.RegistrationInfo
 
 class AuthenticationPlugin(application: Application) extends TemplatesPlugin {
 
-  def getLoginPage[A](implicit request: Request[A], form: Form[(String, String)], msg: Option[String]): Html = {
-    views.html.authentication.login(form, msg)
-  }
+  def getLoginPage[A](implicit request: Request[A], form: Form[(String, String)], msg: Option[String]): Html = ???
 
   def getSignUpPage[A](implicit request: Request[A], form: Form[RegistrationInfo], token: String): Html = ???
 

@@ -329,3 +329,4 @@ class Application extends Backbone.Router
 $ ->
   window.app = new Application()
   Backbone.history.start()
+

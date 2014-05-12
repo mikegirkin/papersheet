@@ -4,6 +4,8 @@
 
 # Home page
 GET         /                                controllers.Application.index
+GET         /login                           controllers.Application.login
+POST        /login                           controllers.Application.postLogin
 
 #JSON data
 
@@ -17,7 +19,7 @@ POST        /json/entrygroups                controllers.EntryGroupController.cr
 
 
 # Login page
-GET         /login                           securesocial.controllers.LoginPage.login
+#GET         /login                           securesocial.controllers.LoginPage.login
 GET         /logout                          securesocial.controllers.LoginPage.logout
 
 # User Registration and password handling

@@ -10,4 +10,12 @@ object Application extends Controller with SecureSocial {
     Ok(views.html.main())
   }
 
+  def login = Action {
+    Ok(views.html.authentication.login())
+  }
+
+  def postLogin = Action { request =>
+    ???
+  }
+
 }
